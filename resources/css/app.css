@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tooltip {
+    @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+    @apply visible z-50;
+}
+
+.context-menu-open {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.36);
+    background-color: white;
+    border-radius: 4px;
+    padding: 4px;
+}
+.context-menu-open ul {
+    padding: 0;
+    margin: 0;
+}
+.context-menu-open ul li {
+    cursor: url('/hold_cursor.png') 12 4, pointer;
+    list-style: none;
+    padding: 6px 6px;
+    margin: 0;
+    border-bottom: 1px solid rgba(122, 122, 122, 0.55);
+}
+.context-menu-open ul li:last-child {
+    border-bottom: 1px solid transparent;
+}
+.context-menu-open ul li:hover {
+    background-color: #BFE2FF;
+}
+
+.notify-block {
+    background-color: white!important;
+    color: #0a0a0a!important;
+    border: 1px solid #94a3b8!important;
+    z-index: 999999;
+}
+.notify-content {
+    border-left: 5px solid #94a3b8!important;
+    font-size: 1rem;
+}
