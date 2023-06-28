@@ -23,20 +23,17 @@
     </head>
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-200 dark:bg-gray-900 sm:items-center py-4 w-screen">
+            <div class="fixed top-0 left-0  px-6 py-4 sm:block">
+                    <a href="https://github.com/guleswine/emoji-quest" class="text-sm text-gray-700 dark:text-gray-500 underline">Github</a>
+                    <a href="https://www.openmoji.org" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Open Emoji</a>
+            </div>
             @if (Route::has('login'))
                 <div class="fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                        @endif
-                    @endauth
                 </div>
             @endif
 
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 fixed pt-14">
                 <div class="flex place-content-center">
                     <img class="w-20 h-20 woman_standing" src="/open_emoji/svg/woman_standing.svg"/>
                     <img class="w-20 h-20 keyboard" src="/open_emoji/svg/keyboard.svg"/>
@@ -61,9 +58,17 @@
 
 
                 @auth
-                    <div class="pt-6 md:p-8 text-center space-y-4">
+
                         <a href="{{ url('/game') }}" class="text-4xl text-gray-700 dark:text-gray-500 underline">Играть</a>
                     </div>
+                @else
+                <div class="pt-6 md:p-8 text-center space-y-4">
+                    <a href="{{ route('login') }}" class="text-2xl text-gray-700 dark:text-gray-500 underline">Log in</a>
+
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="ml-4 text-2xl text-gray-700 dark:text-gray-500 underline">Register</a>
+                    @endif
+                </div>
                 @endauth
             </div>
         </div>

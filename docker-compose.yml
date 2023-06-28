@@ -1,0 +1,65 @@
+version: '3.9'
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: emoji-quest
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+    container_name: app-eq
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    networks:
+      - app-network
+    command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver-eq
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-network
+
+
+  #PgSQL Service
+  db:
+    image: postgres:15.1
+    container_name: pgsql-eq
+    volumes:
+         - ./docker/pgsql:/var/lib/postgresql/data
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "eq"
+      POSTGRES_USER: "eq-user"
+      POSTGRES_PASSWORD: "password"
+      SERVICE_TAGS: dev
+      SERVICE_NAME: pgsql
+    networks:
+      - app-network
+
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
