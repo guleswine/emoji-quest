@@ -1,4 +1,7 @@
-# Emoji Quest
+
+<p align="center">
+    <a href="https://emoji-quest.com/" title="Emoji Quest Logo"><img src="https://emoji-quest.com/logo.png"></a>
+</p>
 
 ## About
 
@@ -9,6 +12,16 @@ Multiplayer online game in real time with elements of turn-based strategy.
 
 **[Play as guest](https://emoji-quest.com/guest)**
 
+## Install
+```
+docker-compose up -d
+docker-compose exec app cp .env.example .env
+docker-compose exec app composer install
+docker-compose exec app npm install
+docker-compose exec app npm run build
+docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan migrate
+```
 ## Used
 
 - [Laravel](https://laravel.com/)

@@ -23,9 +23,14 @@
     </head>
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-200 dark:bg-gray-900 sm:items-center py-4 w-screen">
-            <div class="fixed top-0 left-0  px-6 py-4 sm:block">
-                    <a href="https://github.com/guleswine/emoji-quest" class="text-sm text-gray-700 dark:text-gray-500 underline">Github</a>
-                    <a href="https://www.openmoji.org" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Open Emoji</a>
+            <div class="fixed top-0 left-0  px-6 py-4 flex ">
+                <a href="https://github.com/guleswine/emoji-quest" class="items-center inline-flex text-sm text-center text-gray-700 dark:text-gray-500 underline">
+                    <img class="w-8 h-8" quest-q src="/open_emoji/lite_colored/github.png"/>Github
+                </a>
+                    <a href="https://www.openmoji.org" class="items-center inline-flex ml-4 text-center text-sm text-gray-700 dark:text-gray-500 underline">
+                        <img class="w-8 h-8" quest-q src="/open_emoji/lite_colored/copyright.png"/>
+                        Open Emoji
+                    </a>
             </div>
             @if (Route::has('login'))
                 <div class="fixed top-0 right-0 px-6 py-4 sm:block">
@@ -58,17 +63,24 @@
 
 
                 @auth
-
-                        <a href="{{ url('/game') }}" class="text-4xl text-gray-700 dark:text-gray-500 underline">Играть</a>
+                    <div class="pt-6 md:p-8 text-center space-y-4">
+                        <a href="{{ url('/game') }}" class="text-4xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">Играть</a>
                     </div>
                 @else
-                <div class="pt-6 md:p-8 text-center space-y-4">
-                    <a href="{{ route('login') }}" class="text-2xl text-gray-700 dark:text-gray-500 underline">Log in</a>
+                <div class="pt-6 md:pt-8 text-center space-y-4">
+                    <a href="{{ route('login') }}" class="text-2xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">Log in</a>
 
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="ml-4 text-2xl text-gray-700 dark:text-gray-500 underline">Register</a>
+                        <a href="{{ route('register') }}" class="ml-4 text-2xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">Register</a>
                     @endif
                 </div>
+                    <div class="md:pt-8 text-center space-y-4">
+                        <div class="">
+
+                        <a href="guest" class="text-2xl inline-flex text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">
+                            <img class="w-8 h-8" quest-q src="/open_emoji/lite_colored/video_game.png"/> Play as Guest</a>
+                        </div>
+                    </div>
                 @endauth
             </div>
         </div>
