@@ -15,7 +15,7 @@ class TalentController extends Controller
         $talents = DB::table('hero_talents')
             ->join('talents', 'hero_talents.talent_id', '=', 'talents.id')
             ->where('hero_talents.hero_id', $hero->id)
-            ->selectRaw('talents.name,talents.emoji_name,hero_talents.*')
+            ->selectRaw('talents.name,talents.emoji,hero_talents.*')
             ->get();
 
         return response()->json($talents);

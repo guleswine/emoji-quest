@@ -10,4 +10,6 @@ class Talent extends Model
     use HasFactory;
 
     protected $table = 'talents';
+
+    protected $fillable = ['name','emoji','levels','available_at_start'];
 }

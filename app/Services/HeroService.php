@@ -15,6 +15,7 @@ use App\Models\HeroTalent;
 use App\Models\HeroTravelStat;
 use App\Models\InventorySlot;
 use App\Models\Item;
+use App\Models\Map;
 use App\Models\Skill;
 use App\Models\Talent;
 use App\Models\User;
@@ -27,24 +28,28 @@ class HeroService
 
         $hero = Hero::where('user_id', $user->id)->first();
         if (!$hero) {
-            $StartCell = Cell::where('x', 0)->where('y', 0)->where('map_id', 1)->first();
+            $map = Map::find(1);
+            $x = floor($map->size_width/2);
+            $y = floor($map->size_height/2);
+            $StartCell = Cell::where('x', $x)->where('y', $y)->where('map_id', 1)->first();
             $hero = Hero::factory()->create([
                 'user_id'=>$user->id,
                 'name'=>$user->name,
+                'map_id'=>1,
                 'cell_id'=>$StartCell->id,
             ]);
-
+            self::updateCell($hero, $StartCell->id);
         }
         //Добавление характиристик
         $base_hero_stats = ['attack'=>5, 'dodge'=>0, 'critical_hit'=>0, 'armor'=>1, 'attack_range'=>1, 'action_points'=>4, 'health'=>50];
         foreach ($base_hero_stats as $name=>$value) {
             HeroStat::firstOrCreate([
                'hero_id'=>$hero->id,
-               'name'=>$name,
+               'attribute'=>$name,
             ], [
-                'final'=>$value,
-                'current'=>$value,
-                'base'=>$value,
+                'final_value'=>$value,
+                'value'=>$value,
+                'base_value'=>$value,
             ]);
         }
 
@@ -53,7 +58,7 @@ class HeroService
         foreach ($base_hero_travel_stats as $name=>$value) {
             HeroTravelStat::firstOrCreate([
                 'hero_id'=>$hero->id,
-                'name'=>$name,
+                'attribute'=>$name,
             ], [
                 'value'=>$value,
             ]);
@@ -78,6 +83,8 @@ class HeroService
             $Inventory = HeroInventory::firstOrCreate([
                 'hero_id'=>$hero->id,
                 'type'=>$type,
+            ],[
+                'slots_count'=>25
             ]);
             $InventorySlotsCount = InventorySlot::where('inventory_id', $Inventory->id)->count();
             for ($i = $InventorySlotsCount; $i < $Inventory->slots_count; $i++) {

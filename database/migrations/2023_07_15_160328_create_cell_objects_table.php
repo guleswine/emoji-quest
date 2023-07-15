@@ -13,15 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('maps', function (Blueprint $table) {
-            $table->comment('Global game regions');
+        Schema::create('cell_objects', function (Blueprint $table) {
             $table->id();
+            $table->integer('cell_id');
             $table->string('name');
             $table->string('emoji');
-            $table->integer('start_cell_id')->nullable();
-            $table->integer('size_width');
-            $table->integer('size_height');
-            $table->string('style')->nullable();
+            $table->string('object_class');
+            $table->integer('object_id');
+            $table->string('type')->nullable();
+            $table->integer('size')->default(8);
+            $table->integer('priority');
+            $table->boolean('use_as_background')->default(false);
+            $table->integer('creator_hero_id')->nullable();
+
             $table->timestamps();
         });
     }
@@ -33,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('maps');
+        Schema::dropIfExists('cell_objects');
     }
 };

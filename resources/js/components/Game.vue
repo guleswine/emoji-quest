@@ -25,7 +25,7 @@
     <note ref="note" :show="show.note" @close="close('note')" ></note>
   </Teleport>
   <Teleport to="body">
-      <education ref="education" :show="show.education" @close="close('education')" ></education>
+      <education ref="education" :show="show.education" @close="closeEducation" ></education>
   </Teleport>
   <!--Sidebar with Dimmer -->
   <!-- Sidebar -->
@@ -212,7 +212,7 @@ export default {
         help: false,
         events: false,
         note: false,
-          education: false
+        education: false
       },
     }
   },
@@ -229,7 +229,10 @@ export default {
 
   },
   mounted() {
-      this.show.education = true;
+      if (!localStorage.educated){
+          this.show.education = true;
+      }
+
     this.$nextTick(function () {
 
       // Код, который будет запущен только после
@@ -564,6 +567,10 @@ export default {
       this.show[component] = false;
       this.loadHero();
       this.loadCells();
+    },
+    closeEducation(){
+      this.show["education"] = false;
+      localStorage.educated = true;
     },
     readNote(note_id){
         this.menuHide();

@@ -6,6 +6,8 @@ use App\Events\UserActionEvent;
 use App\Jobs\EnemyMove;
 use App\Models\Cell;
 use App\Models\Hero;
+use App\Models\HeroInventory;
+use App\Models\InventorySlot;
 use App\Models\User;
 use App\Services\AttackService;
 use App\Services\BattleService;
@@ -29,6 +31,23 @@ class TestController extends Controller
      */
     public function index()
     {
+        $InventoryTypes = ['items', 'equipment', 'resources', 'appearance'];
+
+        foreach ($InventoryTypes as $type) {
+            $Inventory = HeroInventory::firstOrCreate([
+                'hero_id'=>1,
+                'type'=>$type,
+            ],['']);
+            var_dump($Inventory);
+            $InventorySlotsCount = InventorySlot::where('inventory_id', $Inventory->id)->count();
+            dd($InventorySlotsCount);
+            for ($i = $InventorySlotsCount; $i < $Inventory->slots_count; $i++) {
+                InventorySlot::create([
+                    'inventory_id'=>$Inventory->id,
+                ]);
+            }
+        }
+
         dd('ok');
         $free_cell = Cell::where('map_id', 3)
             ->leftJoin('cell_objects', 'cell_objects.cell_id', '=', 'cells.id')

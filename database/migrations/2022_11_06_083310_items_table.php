@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('emoji')->nullable();
             $table->string('type');
+            $table->string('description')->nullable();
+            $table->string('size')->default(8);
             $table->timestamps();
         });
     }

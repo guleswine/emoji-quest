@@ -9,6 +9,6 @@ class HeroStat extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['current', 'final', 'hero_id', 'static_buff',
-        'percent_buff', 'static_improvement', 'percent_improvement', 'base', 'name'];
+    protected $fillable = ['value', 'final_value', 'hero_id', 'static_buff',
+        'percent_buff', 'static_improvement', 'percent_improvement', 'base_value', 'attribute'];
 }

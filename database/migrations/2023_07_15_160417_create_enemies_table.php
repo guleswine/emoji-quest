@@ -13,17 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('enemies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('emoji');
-            $table->integer('size');
-            $table->integer('cell_id')->nullable();
-            $table->string('type');
-            $table->integer('question_id')->nullable();
-            $table->integer('object_id')->nullable();
-            $table->integer('current_health');
+            $table->integer('health')->default(100);
+            $table->integer('attack');
+            $table->integer('armor');
+            $table->integer('attack_range')->default(1);
+            $table->integer('experience');
+            $table->integer('dodge')->default(0);
+            $table->integer('critical_hit')->default(0);
+            $table->integer('action_points');
             $table->integer('drop_item_id');
+            $table->jsonb('attack_areas');
             $table->timestamps();
         });
     }
@@ -35,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('enemies');
     }
 };

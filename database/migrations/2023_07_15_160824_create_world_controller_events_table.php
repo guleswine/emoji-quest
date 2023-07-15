@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('world_controller_events', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('lang',10)->default('en');
-            $table->string('timezone',100)->default('Europe/Moscow');
-            $table->rememberToken();
+            $table->string('function');
+            $table->integer('object_id');
+            $table->integer('world_controller_id');
+            $table->jsonb('params');
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('world_controller_events');
     }
 };

@@ -43,7 +43,7 @@ export default {
 </script>
 
 <template>
-  <modal :show="show">
+  <modal :show="show" :height="'h-screen lg:h-[80vh]'" :width="'w-screen lg:w-[40vw]'">
     <template v-slot:header>
       <div class="grid grid-cols-4 bg-slate-100 w-full h-full">
         <div class="col-span-3 justify-self-start flex align-items-center">

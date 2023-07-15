@@ -21,8 +21,8 @@ class CellFactory extends Factory
     {
         return [
             'name'=>'Дерево',
-            'emoji_name'=>'deciduous_tree',
-            'surface_type_name'=>'ground',
+            'emoji'=>'deciduous_tree',
+            'surface_type'=>'ground',
             'size'=>8,
         ];
     }

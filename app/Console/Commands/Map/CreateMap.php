@@ -15,7 +15,8 @@ class CreateMap extends Command
      */
     protected $signature = 'map:create
                             {name : Map name}
-                            {size? : Map width and height x:y format}';
+                            {size? : Map width and height x:y format}
+                            {--surface : Surface cells}';
 
     /**
      * The console command description.
@@ -45,10 +46,17 @@ class CreateMap extends Command
             }
         }
         $map = Map::factory()->create($attributes);
+        $surface_type = $this->option('surface');
+        if ($surface_type) {
+            $cell_name = 'Дерево';
+            $cell_emoji = 'deciduous_tree';
+            $surface_type = 'ground';
+        }else{
+            $cell_name = $this->ask('Cells name?');
+            $cell_emoji = $this->ask('Cells emoji?');
+            $surface_type = $this->ask('Cells surface type?');
+        }
 
-        $cell_name = $this->ask('Cells name?');
-        $cell_emoji = $this->ask('Cells emoji?');
-        $surface_type = $this->ask('Cells surface type?');
 
         $bar = $this->output->createProgressBar($map->size_width * $map->size_height);
         $this->info('Start create cells for map...');
@@ -64,10 +72,10 @@ class CreateMap extends Command
                     $cell_attributes['name'] = $cell_name;
                 }
                 if ($cell_emoji) {
-                    $cell_attributes['emoji_name'] = $cell_emoji;
+                    $cell_attributes['emoji'] = $cell_emoji;
                 }
                 if ($surface_type) {
-                    $cell_attributes['surface_type_name'] = $surface_type;
+                    $cell_attributes['surface_type'] = $surface_type;
                 }
                 Cell::factory()->create($cell_attributes);
                 $bar->advance();

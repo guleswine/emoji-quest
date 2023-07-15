@@ -13,15 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('battle_queue_units', function (Blueprint $table) {
             $table->id();
+            $table->integer('battle_id');
+            $table->string('type');
+            $table->integer('object_id');
+            $table->integer('order');
+            $table->string('object_name');
+            $table->integer('health');
+            $table->integer('action_points');
+            $table->string('emoji_name');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('lang',10)->default('en');
-            $table->string('timezone',100)->default('Europe/Moscow');
-            $table->rememberToken();
+            $table->string('protected_area');
             $table->timestamps();
         });
     }
@@ -33,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('battle_queue_units');
     }
 };

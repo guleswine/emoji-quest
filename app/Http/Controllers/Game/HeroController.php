@@ -30,7 +30,7 @@ class HeroController extends Controller
     public function getHeroStats()
     {
         $hero = Hero::where('user_id', Auth::user()->id)->first();
-        $hero_stats = HeroStat::where('hero_id', $hero->id)->get()->keyBy('name');
+        $hero_stats = HeroStat::where('hero_id', $hero->id)->get()->keyBy('attribute');
 
         return response()->json($hero_stats);
     }

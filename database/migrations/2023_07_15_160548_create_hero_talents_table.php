@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('hero_talents', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('lang',10)->default('en');
-            $table->string('timezone',100)->default('Europe/Moscow');
-            $table->rememberToken();
+            $table->integer('hero_id');
+            $table->integer('talent_id');
+            $table->integer('level')->default(1);
+            $table->integer('current_progress');
+            $table->integer('total_progress');
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('hero_talents');
     }
 };

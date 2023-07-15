@@ -31,7 +31,7 @@ export default {
 </script>
 
 <template>
-  <modal :show="show">
+  <modal :show="show" :height="'h-screen lg:h-[80vh]'" :width="'w-screen lg:w-[40vw]'">
     <template v-slot:header>
       <div class="grid grid-cols-4 bg-slate-100 w-full h-full">
         <div class="col-span-3 justify-self-start flex align-items-center">
@@ -51,7 +51,7 @@ export default {
                  :style="'background: linear-gradient(90deg, #87d2ee '+Math.round((talent.current_progress/talent.total_progress)*100)+'%, #ffffff 0%)'">
               <div class="grid grid-cols-10 h-full" >
                 <div class="col-span-1 flex">
-                  <img class="h-10 my-auto"  v-bind:src="'/open_emoji/lite_colored/'+talent.emoji_name+'.png'">
+                  <img class="h-10 my-auto"  v-bind:src="'/open_emoji/lite_colored/'+talent.emoji+'.png'">
                 </div>
                 <div class="col-span-4 flex">
                   <p class="my-auto">{{talent.name}}</p>

@@ -21,17 +21,15 @@ return new class extends Migration
             $table->string('emoji');
             $table->integer('size')->default(10);
             $table->integer('map_id')->nullable();
-            $table->integer('cell_id');
+            $table->integer('cell_id')->nullable();
             $table->integer('lvl')->default(1);
             $table->integer('experience')->default(0);
-            $table->integer('health_base')->default(100);
-            $table->integer('health_current')->default(100);
-            $table->integer('attack_base')->default(5);
-            $table->integer('attack_current')->default(5);
-            $table->integer('armor_base')->default(1);
-            $table->integer('armor_current')->default(1);
-            $table->integer('action_points_base')->default(5);
-            $table->integer('action_points_current')->default(5);
+            $table->integer('experience_total');
+            $table->integer('coins')->default(0);
+            $table->integer('skill_points')->default(0);
+            $table->string('state_name')->default('traveler');
+            $table->integer('state_object_id')->nullable();
+
             $table->timestamps();
         });
     }

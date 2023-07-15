@@ -18,13 +18,13 @@ return new class extends Migration
             $table->id();
             $table->integer('map_id');
             $table->string('name');
-            $table->string('emoji');
-            $table->enum('surface_type', ['impassable', 'ground', 'water', 'snow', 'ice', 'swamp', 'sand', 'solid'])->default('ground');
+            $table->string('emoji')->nullable();
+            $table->string('surface_type')->default('ground');
             $table->integer('x');
             $table->integer('y');
             $table->integer('z')->default(0);
             $table->integer('size')->default(8);
-            $table->integer('entrance_to_map_id')->nullable();
+            $table->integer('transfer_to_cell_id')->nullable();
             $table->timestamps();
         });
     }

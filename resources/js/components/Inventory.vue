@@ -201,15 +201,15 @@ export default {
                     </div>
                     <div  class="grid grid-cols-8 ">
                       <div class="flex col-span-1"><img class="h-6 lg:h-7 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/red_heart.png"></div>
-                      <div class="col-span-3 self-center">{{hero_stats.health.current}} ({{Math.floor((hero_stats.health.current/hero_stats.health.final)*100)}}%)</div>
+                      <div class="col-span-3 self-center">{{hero_stats.health.value}} ({{Math.floor((hero_stats.health.value/hero_stats.health.final_value)*100)}}%)</div>
                       <div class="flex col-span-1"><img class="h-6 lg:h-7  m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/books.png"></div>
                       <div class="col-span-3 self-center">{{hero.skill_points}}</div>
                       <div class="flex col-span-1"><img class="h-6 lg:h-7 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/brown_shield.png"></div>
-                      <div class="col-span-3 self-center">{{hero_stats.armor.current}}</div>
+                      <div class="col-span-3 self-center">{{hero_stats.armor.value}}</div>
                       <div class="flex col-span-1"><img class="h-6 lg:h-7 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/game_die.png"></div>
-                      <div class="col-span-3 self-center">{{hero_stats.action_points.current}}</div>
+                      <div class="col-span-3 self-center">{{hero_stats.action_points.value}}</div>
                       <div class="flex col-span-1"><img class="h-6 lg:h-7 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/dagger.png"></div>
-                      <div class="col-span-3 self-center">{{hero_stats.attack.current}}</div>
+                      <div class="col-span-3 self-center">{{hero_stats.attack.value}}</div>
                       <div class="flex col-span-1"><img class="h-6 lg:h-7 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/coin.png"></div>
                       <div class="col-span-3 self-center">{{hero.coins}}</div>
                     </div>

@@ -9,5 +9,5 @@ class HeroTravelStat extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['hero_id', 'name', 'value'];
+    protected $fillable = ['hero_id', 'attribute', 'value'];
 }

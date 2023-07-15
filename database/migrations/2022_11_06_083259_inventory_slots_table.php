@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('inventory_slots', function (Blueprint $table) {
-            $table->comment('Slots in invenyory');
+            $table->comment('Slots in inventory');
             $table->id();
             $table->integer('inventory_id');
             $table->integer('item_id')->nullable();

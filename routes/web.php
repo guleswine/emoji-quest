@@ -25,7 +25,7 @@ Route::get('/game', function () {
 })->middleware(['auth', 'verified'])->name('game');
 
 Route::get('/guest', function () {
-    $user = \App\Models\User::find(3);
+    $user = \App\Models\User::where('name', 'Guest')->orderBy('id')->first();
     \Illuminate\Support\Facades\Auth::login($user);
 
     return redirect(\App\Providers\RouteServiceProvider::HOME);

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('text', 500);
             $table->integer('next_question_id')->nullable();
             $table->integer('event_id')->nullable();
+            $table->integer('condition_group_id')->nullable();
             $table->timestamps();
         });
     }

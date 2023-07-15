@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('category');
             $table->string('img');
+            $table->string('unicode',50);
             $table->timestamps();
         });
     }
