@@ -100,7 +100,7 @@ export default {
                           :class="{ 'bg-blue-300': (skill.learned === true), 'bg-gray-100':(skill.unlocked === true && skill.learned !== true), 'bg-gray-400': !skill.unlocked && !skill.learned,
                           'hover:bg-blue-400': (skill.learned === true), 'hover:bg-gray-300':(skill.unlocked === true && skill.learned !== true), 'hover:bg-gray-500': !skill.unlocked && !skill.learned}"
                           @mouseenter="menuOpen($event,skill)" @mouseleave="menuHide" @dblclick="learnSkill(skill)">
-                    <img class="h-14 w-14 m-auto"  style="max-width: none;" v-bind:src="'/open_emoji/lite_colored/'+skill.emoji_name+'.png'">
+                    <img class="h-14 w-14 m-auto"  style="max-width: none;" v-bind:src="'/open_emoji/lite_colored/'+skill.emoji+'.png'">
                   </button>
                 </foreignObject>
               </svg>

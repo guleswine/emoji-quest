@@ -35,7 +35,7 @@ class CreateMap extends Command
         $attributes = [];
         $name = $this->argument('name');
         $attributes['name'] = $name;
-        $size = $this->argument('size');
+        $size = $this->argument('size') ?? config('emojiquest.default_map_size');
         if ($size) {
             $data = explode(':', $size);
             $size_width = $data[0];

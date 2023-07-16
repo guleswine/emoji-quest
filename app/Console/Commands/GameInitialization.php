@@ -2,8 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Blueprint;
+use App\Models\Enemy;
 use App\Models\HeroTravelStat;
+use App\Models\Item;
+use App\Models\Skill;
 use App\Models\Talent;
+use App\Models\TalentLevel;
+use App\Models\Unit;
 use App\Models\User;
 use App\Services\HeroService;
 use Illuminate\Console\Command;
@@ -32,7 +38,7 @@ class GameInitialization extends Command
      */
     public function handle()
     {
-        $this->call('map:create', ['name'=>'Start world','size'=>'100:100','--surface'=>'trees']);
+        $this->call('map:create', ['name'=>'Start world','size'=>config('emojiquest.default_map_size'),'--surface'=>'trees']);
 
         $guest_user = User::firstOrCreate([
             'name' => 'Guest',
@@ -40,18 +46,33 @@ class GameInitialization extends Command
         ], [
             'password' => bcrypt('guest'),
         ]);
-        $talents = [
-            ['name'=>'Силач', 'emoji'=>'man_lifting_weights'],
-            ['name'=>'Строитель', 'emoji'=>'hammer_and_wrench'],
-            ['name'=>'Торговец', 'emoji'=>'money_with_wings'],
-            ['name'=>'Исследователь', 'emoji'=>'globe_with_meridians'],
-            ['name'=>'Боец', 'emoji'=>'crossed_swords'],
-            ['name'=>'Оратор', 'emoji'=>'speaking_head']
+        $imported_data = [
+            ['name'=>'Blueprints','path'=>'app/data/blueprints.php','model'=>Blueprint::class,'search_attributes'=>['name','category','subcategory','type']],
+            ['name'=>'Talents','path'=>'app/data/talents.php','model'=>Talent::class,'search_attributes'=>['name']],
+            ['name'=>'Talent levels','path'=>'app/data/talent_levels.php','model'=>TalentLevel::class,'search_attributes'=>['level']],
+            ['name'=>'Skills','path'=>'app/data/skills.php','model'=>Skill::class,'search_attributes'=>['name']],
+            ['name'=>'Enemies','path'=>'app/data/enemies.php','model'=>Enemy::class,'search_attributes'=>['name','emoji']],
+            ['name'=>'Items','path'=>'app/data/items.php','model'=>Item::class,'search_attributes'=>['name','type']],
+            ['name'=>'NPCs','path'=>'app/data/npcs.php','model'=>Unit::class,'search_attributes'=>['name','type']],
         ];
-        foreach ($talents as $talent_attr) {
-            Talent::firstOrCreate($talent_attr);
+        foreach ($imported_data as $data_array) {
+
+            $objects = include storage_path($data_array['path']);
+            $bar = $this->output->createProgressBar(count($objects));
+            $this->info('Start create '.$data_array['name'],'...');
+            $bar->start();
+            foreach ($objects as $object_attr) {
+                $search_keys = array_flip($data_array['search_attributes']);
+                $fill_attributes = array_diff_key($object_attr,$search_keys);
+                $search_attributes =  array_intersect_key($object_attr,$search_keys);
+                $data_array['model']::firstOrCreate($search_attributes,$fill_attributes);
+                $bar->advance();
+            }
+            $bar->finish();
+            $this->newLine();
+            $this->info($data_array['name'].' created');
         }
-        $this->info('Talents created');
+
         $this->info('Guest user created, id:'.$guest_user->id);
         $HS = new HeroService();
         $HS->create($guest_user);

@@ -29,31 +29,87 @@
   </Teleport>
   <!--Sidebar with Dimmer -->
   <!-- Sidebar -->
-    <events ref="events" :show="show.events"></events>
-    <help :show="show.help"></help>
+  <events ref="events" :show="show.events"></events>
+  <help :show="show.help"></help>
+  <div class="min-h-screen bg-gray-200">
+  <div class="bg-white border-b border-gray-100" >
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" >
+      <div class="flex justify-between h-16 transition-all duration-700 2xl:h-16" :class="[this.show.header ? 'h-16' : 'h-0']">
+          <div class="flex">
+              <!-- Logo -->
+              <div class="shrink-0 my-auto items-center">
+                  <a href="/">
+                      <svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" class="block h-10 w-auto fill-current text-gray-600">
+                          <g id="color"></g>
+                          <g id="skin">
+                              <g id="color-2">
+                                  <path fill="#fcea2b" d="M42.533,22.2881a4.3,4.3,0,0,0-4.209-4.1314h-6a4.3,4.3,0,0,0-4.209,4.1314l-.792,19.4393a1.0173,1.0173,0,0,1-.1209.4369L30.1357,40.07l-.7136,22.1333a1.2322,1.2322,0,0,0,.25.8789.2412.2412,0,0,0,.152.09c.214,0,.656-.4266.735-1.1254l2.8986-22.5033a4.9252,4.9252,0,0,1,.4028-1.1922l.7246-.8052H36.21l.984.6231a4.9259,4.9259,0,0,1,.352,1.3413l2.542,22.5343c.079.6978.522,1.1254.736,1.1254a.242.242,0,0,0,.152-.09c.1922-.2483.4894-.585.4568-.9l-.9322-22.11L44,42.5"></path>
+                                  <circle cx="35.4039" cy="10.6511" r="2.969" fill="#fcea2b"></circle>
+                              </g>
+                          </g>
+                          <g id="line">
+                              <g id="Standing_Man">
+                                  <g id="line-2">
+                                      <circle cx="35.4039" cy="10.6511" r="2.969" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"></circle>
+                                      <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M40.37,23.5891l1.9,38c.055,1.1-.575,2-1.4,2a2.076,2.076,0,0,1-1.729-1.987l-2.542-22.031c-.129-1.093-.679-1.987-1.229-1.987s-1.103.894-1.229,1.987l-2.539,22.031a2.076,2.076,0,0,1-1.729,1.987c-.825,0-1.455-.9-1.4-2l1.9-38"></path>
+                                      <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M26.3729,41.5891l.792-19a5.274,5.274,0,0,1,5.208-5h6"></path>
+                                  </g>
+                                  <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M38.3,17.589a5.274,5.274,0,0,1,5.208,5l.792,19"></path>
+                              </g>
+                          </g>
+                      </svg>
+                  </a>
+              </div>
 
+              <!-- Navigation Links -->
+              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                  <a class="inline-flex items-center px-1 pt-1 border-t-4 border-gray-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-gray-700 transition duration-150 ease-in-out" href="/game">
+                      Игра
+                  </a>
+              </div>
+          </div>
+
+          <!-- Settings Dropdown -->
+          <div class="hidden sm:flex sm:items-center sm:ml-6">
+
+          </div>
+
+          <!-- Hamburger -->
+          <div class="-mr-2 flex items-center" :class="[this.show.header ? '' : 'hidden']">
+
+                  <form method="POST" action="/logout">
+                      <input type="hidden" name="_token" :value="csrf">
+
+                      <a href="/logout"
+                                             onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                          <img class="h-10 w-10 inline" src="/public/open_emoji/lite_colored/inbox.png">
+                      </a>
+
+                  </form>
+          </div>
+      </div>
+  </div>
+  </div>
   <div class="">
     <div class="h-8 max-w-6xl mx-auto sm:px-6 lg:px-8">
-      <div  class="px-4overflow-hidden 2xl:hidden ">
+      <div  class="px-4 overflow-hidden 2xl:hidden ">
         <button
             @click.prevent="toggleEvents()"
-            class="w-5/12 h-8 p-1 my-auto rounded text-white bg-slate-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300"
-        >
-					<span
-              class="block transform origin-center font-bold"
-          >
-						События
-					</span>
+            class="w-5/12 h-8 p-1 my-auto rounded text-white bg-slate-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300">
+			<span class="block transform origin-center font-bold">События</span>
         </button>
+
+          <button
+              @click.prevent="toggleHeader()"
+              class="w-2/12 h-8 p-1 my-auto ">
+              <span class="block transform origin-center font-bold rounded text-white bg-slate-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300">
+                  <img class="h-6 w-6 inline" src="/public/open_emoji/lite_colored/home_button.png"></span>
+          </button>
         <button
             @click.prevent="toggleHelp()"
-            class="w-5/12 float-right h-8 p-1 my-auto rounded text-white bg-slate-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300"
-        >
-					<span
-              class="block transform origin-center font-bold"
-          >
-						Справка
-					</span>
+            class="w-5/12 float-right h-8 p-1 my-auto rounded text-white bg-slate-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300">
+			<span class="block transform origin-center font-bold">Справка</span>
         </button>
       </div>
     </div>
@@ -154,7 +210,7 @@
         <menu-item v-if="status.cell && hero.id==5"><a :href="'/nova/resources/cells/'+status.cell.id+'/edit'" target="_blank">Редактировать</a></menu-item>
     </ul>
   </div>
-
+    </div>
 
 
 </template>
@@ -192,6 +248,7 @@ export default {
   },
   data(){
     return{
+        csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       cells: [],
       events: [],
       map: {width:11},
@@ -212,7 +269,8 @@ export default {
         help: false,
         events: false,
         note: false,
-        education: false
+        education: false,
+        header: true,
       },
     }
   },
@@ -390,6 +448,9 @@ export default {
     },
     toggleEvents() {
       this.show.events = !this.show.events;
+    },
+    toggleHeader() {
+        this.show.header = !this.show.header;
     },
     toggleHelp() {
       this.show.help = !this.show.help;
@@ -665,7 +726,10 @@ export default {
           this.showNotfy(notify.type,notify.message);
         }
       });
-    }
+    },
+      logout(){
+
+      }
   }
 
 

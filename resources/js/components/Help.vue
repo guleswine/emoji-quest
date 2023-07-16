@@ -18,7 +18,7 @@ export default {
     <!-- Sidebar Content -->
     <div
         ref="content"
-        class="transition-all z-20 2xl:w-80 w-[49vw] duration-700  overflow-hidden flex items-center justify-center 2xl:max-w-lg shadow-lg"
+        class="transition-all duration-700 z-20 2xl:w-80 w-[49vw]   overflow-hidden flex items-center justify-center 2xl:max-w-lg shadow-lg"
         :class="[show ? 'max-w-lg' : 'max-w-0']"
     >
       <div class="bg-white h-full w-full overflow-hidden shadow-sm">

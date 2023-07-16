@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\UserActionEvent;
 use App\Jobs\EnemyMove;
 use App\Models\Cell;
+use App\Models\Enemy;
 use App\Models\Hero;
 use App\Models\HeroInventory;
 use App\Models\InventorySlot;
@@ -31,22 +32,8 @@ class TestController extends Controller
      */
     public function index()
     {
-        $InventoryTypes = ['items', 'equipment', 'resources', 'appearance'];
-
-        foreach ($InventoryTypes as $type) {
-            $Inventory = HeroInventory::firstOrCreate([
-                'hero_id'=>1,
-                'type'=>$type,
-            ],['']);
-            var_dump($Inventory);
-            $InventorySlotsCount = InventorySlot::where('inventory_id', $Inventory->id)->count();
-            dd($InventorySlotsCount);
-            for ($i = $InventorySlotsCount; $i < $Inventory->slots_count; $i++) {
-                InventorySlot::create([
-                    'inventory_id'=>$Inventory->id,
-                ]);
-            }
-        }
+        Enemy::firstOrCreate(['name'=>'Летучая мышь', 'emoji'=>'bat','attack'=>3,'armor'=>1,'health'=>15,'attack_range'=>1,'dodge'=>1,
+            'critical_hit'=>1,'action_points'=>6,'drop_item_id'=>5,'experience'=>10,'attack_areas'=>["head"]]);
 
         dd('ok');
         $free_cell = Cell::where('map_id', 3)

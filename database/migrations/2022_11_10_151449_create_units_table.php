@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('question_id')->nullable();
             $table->integer('object_id')->nullable();
             $table->integer('current_health');
-            $table->integer('drop_item_id');
+            $table->integer('drop_item_id')->nullable();
             $table->timestamps();
         });
     }
