@@ -19,6 +19,7 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
-        "@smartweb/vue-flash-message": "^1.0.0-alpha.12"
+        "@smartweb/vue-flash-message": "^1.0.0-alpha.12",
+        "laravel-wave": "^0.7.1"
     }
 }

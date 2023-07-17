@@ -10,7 +10,7 @@ export default {
 </script>
 <template>
   <div
-      class="absolute flex top-0 h-screen  pt-24 right-0 flex-row"
+      class="absolute flex top-0 h-screen  pt-28 right-0 flex-row"
   >
     <!--Drawer -->
 

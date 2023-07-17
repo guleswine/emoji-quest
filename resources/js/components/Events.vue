@@ -26,7 +26,7 @@ export default {
 </script>
 <template>
   <div
-      class="absolute flex top-0 h-screen  pt-24 left-0 flex-row-reverse"
+      class="absolute flex top-0 h-screen  pt-28 left-0 flex-row-reverse"
   >
     <!--Drawer -->
 
