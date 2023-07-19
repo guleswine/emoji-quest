@@ -35,9 +35,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import { Centrifuge } from 'centrifuge';
 
 window.Pusher = Pusher;
 
+/*
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'aKOTVw.mQU4zQ',
@@ -47,3 +49,5 @@ window.Echo = new Echo({
     encrypted: true,
     cluster: 'eu',
 });
+
+ */

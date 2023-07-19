@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@smartweb/vue-flash-message": "^1.0.0-alpha.12",
+        "centrifuge": "^4.0.1",
         "laravel-wave": "^0.7.1"
     }
 }

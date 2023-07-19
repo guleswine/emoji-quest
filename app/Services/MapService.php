@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\GameEvent;
 use App\Events\UnitMoved;
 use App\Models\BattleQueueUnit;
 use App\Models\Cell;
@@ -117,9 +118,9 @@ class MapService
         $repository = new MapRepository();
         $cells = $repository->getCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
         $event = EventService::moveToCell($hero, $cell);
+        GameEvent::dispatch($hero->id,$event['emoji'],$event['message']);
         $data = [
             'cells'=>$cells,
-            'event'=>$event,
             'path'=>$path,
         ];
 

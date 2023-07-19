@@ -221,6 +221,7 @@ import LogoSvg from './reusable/LogoSvg.vue';
 import Animations from "./animations";
 import {random} from "lodash/number";
 import Education from "./Education.vue";
+import {Centrifuge} from "centrifuge";
 export default {
 
   components: {
@@ -266,7 +267,8 @@ export default {
     this.loadCells();
     this.loadHero();
     this.loadSkills();
-    this.openSocket();
+    // this.openSocket();
+    this.openSocketCentrifuge();
 
 
 
@@ -337,6 +339,55 @@ export default {
              })
        });
     },
+
+    openSocketCentrifuge(){
+        axios.get('/ws/token').then((response) => {
+                let token  = response.data;
+                const subscribeTokenEndpoint = 'https://emoji-quest.com/broadcasting/auth'
+
+                const centrifuge = new Centrifuge('ws://ws.emoji-quest.com/connection/websocket', {
+                    //CONNECTION_TOKEN must be obtained from Centrifuge::generateConnectionToken(...)
+                    token: token
+                })
+
+    // Set the subscription
+                const sub = centrifuge.newSubscription('hero.'+this.hero.id, {
+                    getToken: function (ctx) {
+                        return  new Promise((resolve, reject) => {
+                            fetch(subscribeTokenEndpoint, {
+                                method: 'POST',
+                                headers: new Headers({ 'Content-Type': 'application/json' }),
+                                body: JSON.stringify(ctx)
+                            })
+                                .then(res => {
+                                    if (!res.ok) {
+                                        throw new Error(`Unexpected status code ${res.status}`);
+                                    }
+                                    return res.json();
+                                })
+                                .then(data => {
+                                    resolve(data.token);
+                                })
+                                .catch(err => {
+                                    reject(err);
+                                });
+                        });
+                    },
+                })
+            centrifuge.connect();
+            sub.on('publication', function(ctx) {
+                // handle new Publication data coming from channel "news".
+                console.log(ctx.data);
+            });
+
+            sub.subscribe();
+
+        });
+    },
+      customGetToken(endpoint, ctx) {
+          console.log(endpoint);
+
+      },
     moveOtherHero(path){
       //console.log(path);
     },
@@ -548,7 +599,6 @@ export default {
           this.clearAnimations();
           this.hero.cell_id = id;
           this.loadHero();
-          this.$refs.events.addEvent(response.data.event);
           let path = response.data.path;
           this.$nextTick(() => {
             let counter = 0;

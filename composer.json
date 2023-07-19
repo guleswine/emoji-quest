@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "nunomaduro/larastan": "^2.6",
+        "opekunov/laravel-centrifugo-broadcaster": "^2.1",
         "php-junior/nova-logs": "^1.1",
         "phpstan/phpstan": "^1.10"
     },

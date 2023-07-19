@@ -24,6 +24,15 @@ Route::get('/game', function () {
     return view('game');
 })->middleware(['auth', 'verified'])->name('game');
 
+Route::get('/ws/token', function () {
+    $centrifugo = new \Opekunov\Centrifugo\Centrifugo();
+    $expire = now()->addDay();
+    $token = $centrifugo->generateConnectionToken((string)Auth::id(), $expire, [
+        'name' => Auth::user()->name,
+    ]);
+    return $token;
+})->middleware(['auth', 'verified']);
+
 Route::get('/guest', function () {
     $user = \App\Models\User::where('name', 'Guest')->orderBy('id')->first();
     \Illuminate\Support\Facades\Auth::login($user);
