@@ -34,8 +34,8 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - "800:80"
+      - "4430:443"
     networks:
       - app-network
 
