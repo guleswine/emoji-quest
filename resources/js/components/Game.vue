@@ -144,7 +144,7 @@
     <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-white overflow-hidden shadow-lg ">
         <div id="map-border" class="grid p-6 border-b border-gray-200 overflow-scroll h-[70vh] " :style="'background-color: '+(map ? map.ambient_color : 'rgb(255 255 255)')">
-          <div id="map" class="m-auto flex flex-wrap  " style="line-height: 0px;" :style="'width: '+(3*(map ? map.width : 11))+'rem;'">
+          <div id="map" class="m-auto flex flex-wrap  " style="line-height: 0px;" :style="'width: '+(3*map_local_width)+'rem;'">
             <div :id="'cell-border-'+cell.id"  class="relative cell-border h-12 w-12  select-none bg-transparent hover:bg-gray-400 focus:bg-gray-400 text-gray-800 font-semibold border  hover:border-transparent rounded"
                  v-for="cell in cells" >
               <div :id="'cell-'+cell.id"
@@ -251,6 +251,7 @@ export default {
       cells: [],
       events: [],
       map: null,
+        map_local_width: 11,
       hero: null,
       skills: null,
       status: {cell:null,attribute_emoji:null,battle: null},
@@ -565,7 +566,7 @@ export default {
     },
     applyCells(cells){
       this.cells = cells;
-      this.map.width = this.calcCellsWidth(this.cells);
+      this.map_local_width = this.calcCellsWidth(this.cells);
       let building_cells = this.cells.filter(item => item.building_animation > 0);
       this.$nextTick(() => {
         if (building_cells) {
