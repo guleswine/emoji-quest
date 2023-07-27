@@ -27,10 +27,15 @@ Route::get('/game', function () {
 Route::get('/ws/token', function () {
     $centrifugo = new \Opekunov\Centrifugo\Centrifugo();
     $expire = now()->addDay();
+    $hero = \App\Models\Hero::where('user_id',Auth::id())->first();
     $token = $centrifugo->generateConnectionToken((string)Auth::id(), $expire, [
         'name' => Auth::user()->name,
     ]);
-    return $token;
+    $data = [
+        'hero_id' => $hero->id,
+        'token' => $token,
+    ];
+    return $data;
 })->middleware(['auth', 'verified']);
 
 Route::get('/guest', function () {
@@ -63,6 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/map/global-cells', 'MapController@getGlobalCells')->name('get-global-cells');
         Route::get('/map/cells', 'MapController@getCells')->name('get-cells');
+        Route::get('/map', 'MapController@getMap');
 
         Route::get('/skills', 'SkillController@getSkills')->name('get-skills');
         Route::get('/skills/names', 'SkillController@getSkillNames')->name('get-skills-names');

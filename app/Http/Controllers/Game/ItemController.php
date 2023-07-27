@@ -25,7 +25,7 @@ class ItemController extends Controller
             $IS->addItem($item);
             $cell_object->delete();
         }
-        $cell = MapRepository::getCell($cell_id);
+        $cell = MapRepository::getFormatedCell($cell_id);
 
         return ['cell'=>$cell];
 

@@ -14,12 +14,21 @@ use Illuminate\Support\Facades\Auth;
 class MapController extends Controller
 {
     protected $service;
-    protected $repository;
+    protected MapRepository $repository;
 
     public function __construct(MapService $service, MapRepository $repository)
     {
         $this->service = $service;
         $this->repository = $repository;
+    }
+
+    public function getMap(){
+        $user = Auth::user();
+        $hero = Hero::where('user_id', $user->id)->first();
+        $cell = Cell::find($hero->cell_id);
+        $map = Map::find($cell->map_id);
+
+        return  response()->json($map);
     }
 
     public function getCells(Request $request)
@@ -37,7 +46,7 @@ class MapController extends Controller
             $radius_y = 21;
         }
 
-        $data = $this->repository->getCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+        $data = $this->repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
 
         return response()->json($data);
     }
@@ -56,7 +65,7 @@ class MapController extends Controller
         if ($map->size_height <= 41) {
             $radius_y = 41;
         }
-        $data = $this->repository->getCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+        $data = $this->repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
 
         return response()->json($data);
     }

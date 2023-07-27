@@ -25,7 +25,7 @@ class Hero extends Model
 
     public function loadStats()
     {
-        $this->stats = HeroStat::where('hero_id', $this->id)->get()->keyBy('name');
+        $this->stats = HeroStat::where('hero_id', $this->id)->get()->keyBy('attribute');
     }
 
     public function getCurrentStat($stat_name)
@@ -34,7 +34,7 @@ class Hero extends Model
             $this->loadStats();
         }
 
-        return $this->stats[$stat_name]->current;
+        return $this->stats[$stat_name]->value;
     }
 
     public function getFinalStat($stat_name)
@@ -43,15 +43,15 @@ class Hero extends Model
             $this->loadStats();
         }
 
-        return $this->stats[$stat_name]->final;
+        return $this->stats[$stat_name]->final_value;
     }
 
     public function updateCurrentStat($stat_name, $value)
     {
         if (!blank($this->stats)) {
-            $this->stats[$stat_name]->current = $value;
+            $this->stats[$stat_name]->value = $value;
         }
-        HeroStat::where('hero_id', $this->id)->where('name', $stat_name)->update(['current'=>$value]);
+        HeroStat::where('hero_id', $this->id)->where('attribute', $stat_name)->update(['value'=>$value]);
         if (in_array($stat_name, ['health', 'action_points']) and $this->state_name == 'battle') {
             BattleQueueUnit::where('object_name', 'hero')->where('object_id', $this->id)->update([$stat_name=>$value]);
         }

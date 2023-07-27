@@ -12,4 +12,6 @@ class EventAction extends Model
     protected $casts = [
       'params'=>'array',
     ];
+
+    protected  $fillable = ['event_id','class','function','params'];
 }

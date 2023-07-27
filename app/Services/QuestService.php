@@ -14,6 +14,7 @@ class QuestService
         HeroQuest::firstOrCreate([
             'hero_id'=>$hero_id,
             'quest_id'=>$quest_id,
+            'completed'=>false
         ]);
         $quest_states = QuestState::where('quest_id', $quest_id)->get();
         foreach ($quest_states as $state) {
@@ -32,7 +33,7 @@ class QuestService
         $HQS = HeroQuestState::find($hero_quest_state_id);
         $HQS->update(['completed'=>true]);
         $QS = QuestState::find($HQS->quest_state_id);
-        if ($QS->last) {
+        if ($QS->final) {
             $HQ = HeroQuest::where('hero_id', $HQS->hero_id)->where('quest_id', $QS->quest_id)->first();
             $HQ->update(['completed'=>true]);
             GameNotification::dispatch($HQS->hero_id, 'info', 'Квест выполнен!');

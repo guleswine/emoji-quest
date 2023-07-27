@@ -10,7 +10,8 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-      - ./docker/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
+      - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ./docker/supervisor:/etc/supervisor/conf.d
       - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
     container_name: app-eq
     restart: unless-stopped
@@ -44,15 +45,15 @@ services:
     image: postgres:15.1
     container_name: pgsql-eq
     volumes:
-         - ./docker/pgsql:/var/lib/postgresql/data
+         - ./docker/data/pgsql:/var/lib/postgresql/data
     restart: unless-stopped
     tty: true
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "eq"
-      POSTGRES_USER: "eq-user"
-      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "${DB_DATABASE}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
       SERVICE_TAGS: dev
       SERVICE_NAME: pgsql
     networks:
@@ -60,9 +61,14 @@ services:
   centrifugo:
       image: centrifugo/centrifugo:v5
       container_name: centrifugo-eq
+      environment:
+          - CENTRIFUGO_TOKEN_HMAC_SECRET_KEY=${CENTRIFUGO_SECRET}
+          - CENTRIFUGO_API_KEY=${CENTRIFUGO_APIKEY}
+          - CENTRIFUGO_ADMIN_PASSWORD=${CENTRIFUGO_ADMIN_PASSWORD}
       volumes:
           - ./docker/centrifugo/config.json:/centrifugo/config.json
       command: centrifugo -c config.json
+      restart: unless-stopped
       ports:
           - 8000:8000
       ulimits:
@@ -71,7 +77,19 @@ services:
               hard: 65535
       networks:
           - app-network
-
+  cache:
+      image: redis:alpine
+      container_name: redis-eq
+      command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+      environment:
+          REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      volumes:
+          - ./docker/data/redis:/data
+      restart: unless-stopped
+      ports:
+          - "6379:6379"
+      networks:
+          - app-network
 
 #Docker Networks
 networks:

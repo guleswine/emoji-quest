@@ -12,4 +12,6 @@ class WorldControllerEvent extends Model
     protected $casts = [
         'params'=>'array',
     ];
+
+    protected $fillable = ['world_controller_id','function','object_id','params'];
 }

@@ -11,7 +11,7 @@ class Cell extends Model
 
     protected $fillable = [
         'map_id', 'name', 'emoji', 'surface_type',
-        'x', 'y', 'z', 'size'];
+        'x', 'y', 'z', 'size','transfer_to_cell_id'];
 
     public function emojiObject()
     {

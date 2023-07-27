@@ -74,7 +74,7 @@ export default {
           <div class="flex h-full" v-if="!quest" >
             <p class="text-4xl m-auto text-slate-500 font-bold">Выберите квест</p>
           </div>
-          <div v-if="quest" class="h-full w-full bg-no-repeat bg-center flex  bg-[url('/open_emoji/svg/scroll_alternative.svg')]">
+          <div v-if="quest" class="h-full w-full bg-no-repeat bg-center flex bg-orange-100">
             <div class="quest-info my-16 lg:my-14 2xl:my-20 mx-12 lg:mx-20 2xl:mx-24  relative w-full" >
               <div id="quest-info-data" class="overflow-y-auto max-h-full absolute">
                   <p class="font-bold">{{quest.name}}</p>

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('battle_queue_units', function (Blueprint $table) {
             $table->id();
             $table->integer('battle_id');
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->integer('object_id');
             $table->integer('order');
             $table->string('object_name');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('action_points');
             $table->string('emoji_name');
             $table->string('name');
-            $table->string('protected_area');
+            $table->string('protected_area')->nullable();
             $table->timestamps();
         });
     }

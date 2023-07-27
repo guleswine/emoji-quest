@@ -31,7 +31,7 @@ class NoteController extends Controller
     {
         NoteService::deleteNote($note_id);
         CellService::removeObject($cell_id, 'Note', $note_id);
-        $cell = MapRepository::getCell($cell_id);
+        $cell = MapRepository::getFormatedCell($cell_id);
 
         return response()->json($cell);
 

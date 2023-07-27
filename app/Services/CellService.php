@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\CellObject;
+use App\Repositories\CellRepository;
+use App\Repositories\SurfaceTemplateRepository;
 
 class CellService
 {
@@ -16,6 +18,18 @@ class CellService
             self::addObject($finish_cell_id, $name, $emoji, $object_class, $object_id, $size, $use_as_background, $priority, $creator_hero_id);
         }
 
+    }
+
+    public static function updateCellByTemplateKey($cell, $surface_template_key,$extra_atrributes = []){
+        $surface_template = SurfaceTemplateRepository::getTemplate($surface_template_key);
+        $default = [
+            'name'=> $surface_template->name,
+            'emoji'=> $surface_template->emoji,
+            'surface_type'=> $surface_template->type ?? $cell->surface_type,
+            'size'=> $surface_template->size,
+        ];
+        $data = array_merge($default, $extra_atrributes);
+        CellRepository::updateCell($cell, $data);
     }
 
     public static function addObject($cell_id, $name, $emoji, $object_class, $object_id, $size, $use_as_background, $priority, $creator_hero_id = null)

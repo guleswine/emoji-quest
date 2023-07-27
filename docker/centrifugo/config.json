@@ -1,7 +1,7 @@
 {
-    "token_hmac_secret_key": "my_secret",
-    "api_key": "my_api_key",
-    "admin_password": "password",
+    "token_hmac_secret_key": "$CENTRIFUGO_TOKEN_HMAC_SECRET_KEY",
+    "api_key": "$CENTRIFUGO_API_KEY",
+    "admin_password": "$CENTRIFUGO_ADMIN_PASSWORD",
     "admin_secret": "secret",
     "admin": true,
     "allowed_origins": ["*"]

@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('world_controller_events', function (Blueprint $table) {
             $table->id();
             $table->string('function');
-            $table->integer('object_id');
+            $table->integer('object_id')->nullable();
             $table->integer('world_controller_id');
-            $table->jsonb('params');
+            $table->jsonb('params')->nullable();
             $table->timestamps();
         });
     }

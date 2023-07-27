@@ -16,7 +16,9 @@ class CreateMap extends Command
     protected $signature = 'map:create
                             {name : Map name}
                             {size? : Map width and height x:y format}
-                            {--surface : Surface cells}';
+                            {--surface : Surface cells}
+                            {--start-side : Side for start cell}
+                            {--ambient-color : Ambient map}';
 
     /**
      * The console command description.
@@ -48,13 +50,32 @@ class CreateMap extends Command
         $map = Map::factory()->create($attributes);
         $surface_type = $this->option('surface');
         if ($surface_type) {
-            $cell_name = 'Дерево';
-            $cell_emoji = 'deciduous_tree';
-            $surface_type = 'ground';
+            switch ($surface_type) {
+                case 'forest':
+                    $cell_name = 'Дерево';
+                    $cell_emoji = 'deciduous_tree';
+                    $surface_type = 'ground';
+                    $size =8;
+                    break;
+                case 'house':
+                    $cell_name = 'Деревянный пол';
+                    $cell_emoji = 'brown_square';
+                    $surface_type = 'wooden_floor';
+                    $size =14;
+                    break;
+                case 'cave':
+                    $cell_name = 'Каменистый пол';
+                    $cell_emoji = null;
+                    $surface_type = 'stone';
+                    $size =15;
+                    break;
+            }
+
         }else{
             $cell_name = $this->ask('Cells name?');
             $cell_emoji = $this->ask('Cells emoji?');
             $surface_type = $this->ask('Cells surface type?');
+            $size = $this->ask('Cells size?',8);
         }
 
 
@@ -68,6 +89,7 @@ class CreateMap extends Command
                 $cell_attributes['map_id'] = $map->id;
                 $cell_attributes['x'] = $x;
                 $cell_attributes['y'] = $y;
+                $cell_attributes['size'] = $size;
                 if ($cell_name) {
                     $cell_attributes['name'] = $cell_name;
                 }
@@ -81,11 +103,45 @@ class CreateMap extends Command
                 $bar->advance();
             }
         }
-        $cell = Cell::where('map_id', $map->id)
-            ->where('x', round($map->size_width / 2))
-            ->where('y', round($map->size_height / 2))
-            ->first();
-        $map->start_cell_id = $cell->id;
+
+        $start_side = $this->option('start-side');
+        if ($start_side){
+            switch ($start_side) {
+                case 'center':
+                    $cell_x = round($map->size_width / 2);
+                    $cell_y = round($map->size_height / 2);
+                    break;
+                case 'left':
+                    $cell_x = 0;
+                    $cell_y = round($map->size_height / 2);
+                    break;
+                case 'right':
+                    $cell_x = $map->size_width-1;
+                    $cell_y = round($map->size_height / 2);
+                    break;
+                case 'top':
+                    $cell_x = round($map->size_width / 2);
+                    $cell_y = $map->size_height-1;
+                    break;
+                case 'bottom':
+                    $cell_x = round($map->size_width / 2);
+                    $cell_y = 0;
+                    break;
+                default:
+                    $cell_x = round($map->size_width / 2);
+                    $cell_y = round($map->size_height / 2);
+            }
+
+            $cell = Cell::where('map_id', $map->id)
+                ->where('x',$cell_x )
+                ->where('y', $cell_y)
+                ->first();
+            $map->start_cell_id = $cell->id;
+
+        }
+
+        $ambient_color = $this->option('ambient-color') ?? 'bg-white';
+        $map->ambient_color = $ambient_color;
         $map->save();
         $bar->finish();
 

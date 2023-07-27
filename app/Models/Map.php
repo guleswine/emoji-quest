@@ -22,6 +22,7 @@ class Map extends Model
         return $result;
     }
 
+
     public function cells()
     {
         return $this->hasMany(Cell::class);

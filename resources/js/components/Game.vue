@@ -54,19 +54,32 @@
                   </a>
               </div>
           </div>
+          <div class="ml-auto mr-0 flex items-center">
+
+          </div>
 
 
 
           <!-- Hamburger -->
           <div class="ml-auto mr-0 flex items-center" >
-
+              <button @click="changeSound"
+                      class="inline-block bg-slate-100 active:bg-slate-400 m-1
+          hover:bg-slate-300 text-white font-medium
+           text-xs leading-tight uppercase rounded
+             transition duration-150 ease-in-out"
+                      id="show-modal" >
+                  <img class="h-12 w-12 m-auto"  style="max-width: none;" :src="'/open_emoji/lite_colored/'+(this.settings.sound ? 'speaker_high_volume' : 'muted_speaker')+'.png'">
+              </button>
                   <form method="POST" action="/logout">
                       <input type="hidden" name="_token" :value="csrf">
 
-                      <a href="/logout" pl
+                      <a href="/logout" class="inline-block bg-slate-100 active:bg-slate-400 m-1
+          hover:bg-slate-300 text-white font-medium
+           text-xs leading-tight uppercase rounded
+             transition duration-150 ease-in-out"
                                              onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                          <img class="h-10 w-10 inline" src="/public/open_emoji/lite_colored/inbox.png" title="Выход" >
+                          <img class="h-12 w-12 inline" src="/public/open_emoji/lite_colored/inbox.png" title="Выход" >
                       </a>
 
                   </form>
@@ -101,7 +114,7 @@
       <div class="grid grid-cols-5 h-full  overflow-hidden shadow-lg">
         <div class="col-span-2 bg-slate-100">
           <div class="px-1 py-1" v-if="status.cell" >
-            <p class=""><img class="h-8 w-8 inline"  style="max-width: none;" v-bind:src="'/open_emoji/lite_colored/'+(status.cell.object_emoji ?? status.cell.emoji)+'.png'">{{status.cell.object_name ?? status.cell.name}}</p>
+            <p class=""><img  v-if="status.cell.object_emoji || status.cell.emoji" class="h-8 w-8 inline"  style="max-width: none;" v-bind:src="'/open_emoji/lite_colored/'+(status.cell.object_emoji ?? status.cell.emoji)+'.png'">{{status.cell.object_name ?? status.cell.name}}</p>
             <p v-if="status.cell.object_attribute">
               <img class="h-6 w-6 inline"  style="max-width: none;" v-bind:src="'/open_emoji/lite_colored/'+status.attribute_emoji+'.png'">
               {{status.cell.object_attribute}}</p>
@@ -130,8 +143,8 @@
     </div>
     <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-white overflow-hidden shadow-lg ">
-        <div id="map-border" class="p-6 bg-white border-b border-gray-200 overflow-scroll h-[70vh] ">
-          <div id="map" class="m-auto flex flex-wrap  " style="line-height: 0px;" :style="'width: '+(3*map.width)+'rem;'">
+        <div id="map-border" class="grid p-6 border-b border-gray-200 overflow-scroll h-[70vh] " :style="'background-color: '+(map ? map.ambient_color : 'rgb(255 255 255)')">
+          <div id="map" class="m-auto flex flex-wrap  " style="line-height: 0px;" :style="'width: '+(3*(map ? map.width : 11))+'rem;'">
             <div :id="'cell-border-'+cell.id"  class="relative cell-border h-12 w-12  select-none bg-transparent hover:bg-gray-400 focus:bg-gray-400 text-gray-800 font-semibold border  hover:border-transparent rounded"
                  v-for="cell in cells" >
               <div :id="'cell-'+cell.id"
@@ -164,7 +177,7 @@
   <div id="cell-menu" class="context-menu-open">
     <ul>
       <menu-item v-if="status.cell && status.cell.object_class=='Item'" @click="takeItem(status.cell)" emoji="palm_down_hand">Подобрать</menu-item>
-      <template v-if="hero.state_name == 'battle'">
+      <template v-if="hero && hero.state_name == 'battle'">
         <template v-if="status.cell && status.cell.object_type == 'enemy'">
             <menu-item  @click="attack(status.cell,'head')" emoji="crossed_swords">Атаковать голову</menu-item>
             <menu-item  @click="attack(status.cell,'body')" emoji="crossed_swords">Атаковать туловище</menu-item>
@@ -177,7 +190,7 @@
         </template>
         <menu-item v-if="status.cell" @click="moveToCell(status.cell.id)" emoji="footprints">Перейти</menu-item>
       </template>
-      <template v-if="hero.state_name == 'traveler'">
+      <template v-if="hero && hero.state_name == 'traveler'">
           <menu-item v-if="status.cell && status.cell.transfer_to_cell_id" @click="transferToCell(status.cell.id,status.cell.transfer_to_cell_id)" emoji="globe_with_meridians">Переместиться</menu-item>
           <menu-item v-if="status.cell && status.cell.object_class=='Unit'" @click="interactionWithUnit(status.cell.object_id)" emoji="chats">Взаимодействовать</menu-item>
           <menu-item v-if="status.cell && status.cell.object_class=='Note'" @click="readNote(status.cell.object_id)" emoji="magnifying_glass_tilted_left">Прочитать</menu-item>
@@ -237,7 +250,7 @@ export default {
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       cells: [],
       events: [],
-      map: {width:11},
+      map: null,
       hero: null,
       skills: null,
       status: {cell:null,attribute_emoji:null,battle: null},
@@ -258,12 +271,15 @@ export default {
         education: false,
         header: false,
       },
+        settings: {
+            sound: true
+        }
     }
   },
 
   created: function()
   {
-
+    this.loadMap();
     this.loadCells();
     this.loadHero();
     this.loadSkills();
@@ -277,7 +293,9 @@ export default {
       if (!localStorage.educated){
           this.show.education = true;
       }
-
+      if (localStorage.sound == 'disable'){
+          this.settings.sound = false;
+      }
     this.$nextTick(function () {
 
       // Код, который будет запущен только после
@@ -300,58 +318,22 @@ export default {
     loadSkills(){
       axios.get('/skills/names').then((response) => {
         this.skills = response.data;
-        //console.log(this.skills);
       });
-    },
-    openSocket(){
-       axios.get('/hero').then((response) => {
-         this.hero = response.data;
-         Echo.private('hero.'+this.hero.id)
-             .listen('GameNotification', (e) => {
-               this.showNotfy(e.type, e.message);
-             })
-             .listen('GameEvent', (e) => {
-               this.$refs.events.addEvent(e);
-             })
-             .listen('UnitMoved', (e) => {
-               this.moveUnit(e.path,e.cell);
-             })
-             .listen('MoveEnemy', (e) => {
-               this.moveUnit(e.path,e.cell);
-             })
-             .listen('BattleQueueMoved', (e) => {
-               this.loadBattleStatus();
-             })
-             .listen('HeroDead', (e) => {
-               this.loadCells();
-               this.loadHero();
-             })
-             .listen('BattleFinished', (e) => {
-               this.loadCells();
-               this.loadHero();
-             })
-             .listen('UnitAttacked', (e) => {
-               this.showAttakUnit(e.cell_id,e.damage);
-             })
-             .listen('UpdateCell', (e) => {
-               let index = this.cells.findIndex(item => item.id == e.cell.id);
-               this.cells[index] = e.cell;
-             })
-       });
     },
 
     openSocketCentrifuge(){
         axios.get('/ws/token').then((response) => {
-                let token  = response.data;
-                const subscribeTokenEndpoint = 'https://emoji-quest.com/broadcasting/auth'
+                let token  = response.data.token;
+                let hero_id = response.data.hero_id;
+                const subscribeTokenEndpoint = '/broadcasting/auth'
 
-                const centrifuge = new Centrifuge('ws://ws.emoji-quest.com/connection/websocket', {
+                const centrifuge = new Centrifuge(import.meta.env.VITE_CENTRIFUGO_CONNECTION, {
                     //CONNECTION_TOKEN must be obtained from Centrifuge::generateConnectionToken(...)
                     token: token
                 })
 
     // Set the subscription
-                const sub = centrifuge.newSubscription('hero.'+this.hero.id, {
+                const sub = centrifuge.newSubscription('hero.'+hero_id, {
                     getToken: function (ctx) {
                         return  new Promise((resolve, reject) => {
                             fetch(subscribeTokenEndpoint, {
@@ -375,21 +357,52 @@ export default {
                     },
                 })
             centrifuge.connect();
-            sub.on('publication', function(ctx) {
+            sub.on('publication', (ctx) => {
+                switch (ctx.data.event){
+                    case "App\\Events\\GameEvent":
+                        this.$refs.events.addEvent(ctx.data);
+                        break;
+                    case "App\\Events\\GameNotification":
+                        this.showNotfy(ctx.data.type, ctx.data.message);
+                        break;
+                    case "App\\Events\\UnitMoved":
+                        this.moveUnit(ctx.data.path,ctx.data.cell);
+                        break;
+                    case "App\\Events\\MoveEnemy":
+                        this.moveUnit(ctx.data.path,ctx.data.cell);
+                        break;
+                    case "App\\Events\\BattleQueueMoved":
+                        this.loadBattleStatus();
+                        break;
+                    case "App\\Events\\HeroDead":
+                        this.loadMap();
+                        this.loadCells();
+                        this.loadHero();
+
+                        break;
+                    case "App\\Events\\BattleFinished":
+                        this.loadCells();
+                        this.loadHero();
+                        break;
+                    case "App\\Events\\UnitAttacked":
+                        this.showAttakUnit(ctx.data.cell_id,ctx.data.damage);
+                        break;
+                    case "App\\Events\\UpdateCell":
+                        let index = this.cells.findIndex(item => item.id == ctx.data.cell.id);
+                        this.cells[index] = ctx.data.cell;
+                        break;
+                    default:
+                        console.log(ctx.data);
+                }
                 // handle new Publication data coming from channel "news".
-                console.log(ctx.data);
+
             });
 
             sub.subscribe();
 
         });
     },
-      customGetToken(endpoint, ctx) {
-          console.log(endpoint);
-
-      },
     moveOtherHero(path){
-      //console.log(path);
     },
     showAttakUnit(cell_id,damage){
       this.playSound('/audio/effects/hit.mp3');
@@ -477,7 +490,6 @@ export default {
 
       this.$nextTick(() => {
         let finish_cell = document.getElementById("cell-img-" + path[path.length-1]);
-        console.log(finish_cell);
         finish_cell.animate(Animations.hero_show, {duration: 1000});
       });
 
@@ -502,7 +514,7 @@ export default {
       contextMenuOpen.style.display = 'block';
     },
     playSound (sound) {
-      if(sound) {
+      if(sound && this.settings.sound) {
         var audio = new Audio(sound);
         audio.play();
       }
@@ -533,13 +545,22 @@ export default {
       });
       return count;
     },
+      loadMap() {
+          let uri = '/map';
+          axios.get(uri).then((response) => {
+              this.map = response.data;
+          });
+      },
     loadCells() {
       let uri = '/map/cells';
       axios.get(uri).then((response) => {
         this.applyCells(response.data);
-        let cell = this.cells.find(item => item.id == this.hero.cell_id);
-        this.status.cell = cell;
-        this.autoScrollToUnit();
+        if (this.hero){
+            let cell = this.cells.find(item => item.id == this.hero.cell_id);
+            this.status.cell = cell;
+            this.autoScrollToUnit();
+        }
+
       });
     },
     applyCells(cells){
@@ -618,7 +639,7 @@ export default {
             });
           });
 
-          this.playSound('/audio/effects/'+cell.surface_type+'_step.wav')
+          this.playSound('/audio/effects/'+cell.surface_type+'_step.mp3')
           this.autoScrollToUnit();
         }
 
@@ -632,6 +653,7 @@ export default {
 
         axios.get(uri).then((response) => {
           if (response.data.success) {
+              this.loadMap();
             this.applyCells(response.data.cells);
             this.$refs.events.addEvent(response.data.event);
             this.hero.cell_id = target_cell_id;
@@ -663,6 +685,15 @@ export default {
       this.show[component] = false;
       this.loadHero();
       this.loadCells();
+    },
+    changeSound(){
+        if (this.settings.sound){
+            this.settings.sound = false;
+            localStorage.sound = 'disable';
+        }else{
+            this.settings.sound = true;
+            localStorage.sound = 'enable';
+        }
     },
     closeEducation(){
       this.show["education"] = false;

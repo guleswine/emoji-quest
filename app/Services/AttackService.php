@@ -18,8 +18,8 @@ class AttackService
     {
 
         $hero_cell = Cell::find($hero->cell_id);
-        $hero_stats = HeroStat::where('hero_id', $hero->id)->get()->keyBy('name');
-        if (PathSearchService::rangeBetwenCells($hero_cell, $cell) > $hero_stats['attack_range']->current) {
+        $hero_stats = HeroStat::where('hero_id', $hero->id)->get()->keyBy('attribute');
+        if (PathSearchService::rangeBetwenCells($hero_cell, $cell) > $hero_stats['attack_range']->value) {
             $data = ['notify'=>['type'=>'info', 'message'=>'Цель слишком далеко']];
 
             return $data;
@@ -67,7 +67,7 @@ class AttackService
 
     public static function attackEnemyByHero(Enemy $enemy, Unit $unit, Hero $hero, Collection $hero_stats, string $attack_area)
     {
-        $damage = self::calcDamage($hero_stats['attack']->current, $enemy->armor, $attack_area, null);
+        $damage = self::calcDamage($hero_stats['attack']->value, $enemy->armor, $attack_area, null);
         $hero_ids = BattleQueueUnit::where('battle_id', $hero->state_object_id)->where('object_name', 'hero')->where('object_id', '<>', $hero->id)->pluck('object_id');
         UnitAttacked::dispatch($hero_ids, $unit->cell_id, $damage);
         $unit->current_health -= $damage;

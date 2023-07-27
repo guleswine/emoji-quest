@@ -20,6 +20,7 @@ use App\Models\Unit;
 use App\Repositories\MapRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BattleService
 {
@@ -38,7 +39,7 @@ class BattleService
         $hero->state_object_id = $battle->id;
         $hero->save();
         $order = 1;
-        $hero_stats = HeroStat::where('hero_id', $hero->id)->get()->keyBy('name');
+        $hero_stats = HeroStat::where('hero_id', $hero->id)->get()->keyBy('attribute');
         BattleQueueUnit::create(
             [
                 'battle_id'=>$battle->id,
@@ -47,8 +48,8 @@ class BattleService
                 'object_id'=>$hero->id,
                 'order'=>$order,
                 'emoji_name'=>$hero->emoji,
-                'health'=>$hero_stats['health']->current,
-                'action_points'=>$hero_stats['action_points']->current,
+                'health'=>$hero_stats['health']->value,
+                'action_points'=>$hero_stats['action_points']->value,
                 'name'=>$hero->name,
             ]
         );
@@ -123,7 +124,6 @@ class BattleService
 
     public static function sendMoveEnemyEventForHeroes($queue_fighters, $path, $cell_with_object): void
     {
-
         foreach ($queue_fighters as $fighter) {
             if ($fighter->object_name == 'hero') {
                 $hero = Hero::find($fighter->object_id);
@@ -194,7 +194,7 @@ class BattleService
                     UnitService::updateCell($unit, $finish_cell->id);
                     $action_points = 0;
                 }
-                $cell_with_object = MapRepository::getCell($unit->cell_id);
+                $cell_with_object = MapRepository::getFormatedCell($unit->cell_id);
                 self::sendMoveEnemyEventForHeroes($queue_fighters, $path->pluck('id'), $cell_with_object);
             }
 
@@ -223,7 +223,7 @@ class BattleService
         }
         CellService::removeObject($unit->cell_id, 'Unit', $unit->id);
         $hero_ids = $battle_queue_unit->where('object_name', 'hero')->pluck('object_id');
-        $cell_with_object = MapRepository::getCell($unit->cell_id);
+        $cell_with_object = MapRepository::getFormatedCell($unit->cell_id);
         UpdateCell::dispatch($hero_ids, $cell_with_object);
         $unit->delete();
         $battle_queue_unit->delete();
@@ -290,9 +290,9 @@ class BattleService
         $next_fighter = $queues->first();
         $next_fighter->protected_area = null;
         if ($fighter->object_name == 'hero') {
-            $HS = HeroStat::where('name', 'action_points')->where('hero_id', $fighter->object_id)->first();
-            $HS->update(['current'=>$HS->final]);
-            $fighter->action_points = $HS->final;
+            $HS = HeroStat::where('attribute', 'action_points')->where('hero_id', $fighter->object_id)->first();
+            $HS->update(['value'=>$HS->final_value]);
+            $fighter->action_points = $HS->final_value;
         //$fighter->protected_area = null;
         } elseif ($fighter->object_name == 'unit' and $fighter->type == 'enemy') {
             $unit = Unit::find($fighter->object_id);

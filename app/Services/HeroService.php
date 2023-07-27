@@ -109,6 +109,18 @@ class HeroService
             $equip_attr['hero_id'] = $hero->id;
             HeroEquipment::firstOrCreate($equip_attr);
         }
+
+        HeroSkill::firstOrCreate([
+            'hero_id'=>$hero->id,
+            'skill_id'=>1,
+            'unlocked'=>true,
+            'learned'=>false
+        ]);
+        $IS = new InventoryService($hero);
+        $IS->addItem(1);
+        $IS->addItem(2);
+        $IS->addItem(3);
+        $IS->addItem(4);
     }
 
     public static function setCell(Hero &$hero, int $cell_id)

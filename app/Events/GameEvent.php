@@ -26,11 +26,7 @@ class GameEvent implements ShouldBroadcast
 
     }
 
-    public function broadcastAs()
-    {
-        //example event broadcast name. Show in Web Socket JSON
-        return 'game-event.new';
-    }
+
 
     /**
      * Get the channels the event should broadcast on.

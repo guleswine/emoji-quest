@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Copy composer.lock and composer.json
 # COPY composer.lock composer.json /var/www/
@@ -54,7 +54,7 @@ COPY . /var/www
 
 
 # Install extensions
-RUN docker-php-ext-install mbstring zip exif pcntl curl pdo_mysql
+RUN docker-php-ext-install mbstring zip exif pcntl curl pdo_mysql opcache
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

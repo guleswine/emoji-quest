@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
             foreach ($WCs as $wc) {
                 WorldService::execute($wc);
             }
-        })->everyTenMinutes();
+        })->everyFiveMinutes();
         $schedule->job(new LifeRecovery)->everyTenMinutes();
     }
 

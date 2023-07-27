@@ -12,4 +12,6 @@ class Condition extends Model
     protected $casts = [
       'params'=>'array',
     ];
+
+    protected $fillable = ['name','function','condition_group_id','result','params'];
 }

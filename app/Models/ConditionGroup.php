@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorldController extends Model
+class ConditionGroup extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','condition_group_id'];
+    protected $fillable = ['name'];
 }

@@ -20,10 +20,7 @@ class CellFactory extends Factory
     public function definition()
     {
         return [
-            'name'=>'Дерево',
-            'emoji'=>'deciduous_tree',
-            'surface_type'=>'ground',
-            'size'=>8,
+
         ];
     }
 }

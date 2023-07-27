@@ -81,7 +81,7 @@ class PathSearchService
 
     public function loadCells()
     {
-        $cells = MapRepository::getCells($this->start_cell->map_id, $this->start_cell->x, $this->start_cell->y, $this->max_map_radius, $this->max_map_radius);
+        $cells = MapRepository::getFormatedCells($this->start_cell->map_id, $this->start_cell->x, $this->start_cell->y, $this->max_map_radius, $this->max_map_radius);
         $cells = collect($cells);
         $cells = $cells->keyBy(function (object $item, int $key) {
             return $item->x . ':' . $item->y;
@@ -93,12 +93,7 @@ class PathSearchService
 
     public static function rangeBetwenCells($start_cell, $finish_cell)
     {
-
-        $abs_y = abs($start_cell->y - $finish_cell->y);
-        $abs_x = abs($start_cell->x - $finish_cell->x);
-        $range = $abs_y + $abs_x;
-
-        return $range;
+        return MapService::rangeBetweenCoords($start_cell->x,$start_cell->y,$finish_cell->x,$finish_cell->y);
     }
 
     public function checkShortStepsToCell($current_cell, $way)

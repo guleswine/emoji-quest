@@ -24,6 +24,7 @@ class MapFactory extends Factory
             'emoji'=>'map',
             'size_width'=>100,
             'size_height'=>100,
+            'ambient_color'=>'bg-white'
         ];
     }
 }

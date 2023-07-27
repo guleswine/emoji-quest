@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\RelativeSide;
+use App\Enums\Side;
+use App\Enums\SideEnum;
 use App\Events\GameEvent;
 use App\Events\UnitMoved;
 use App\Models\BattleQueueUnit;
@@ -9,6 +12,7 @@ use App\Models\Cell;
 use App\Models\Hero;
 use App\Models\HeroVisitedMap;
 use App\Models\Map;
+use App\Repositories\CellRepository;
 use App\Repositories\MapRepository;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +20,73 @@ use Illuminate\Support\Facades\DB;
 
 class MapService
 {
+
+    public static function getRelativeCell(int|Map $map, $side,$offset_x=0,$offset_y=0){
+        if(is_int($map)){
+            $map = MapRepository::getMap($map);
+        }
+        switch ($side) {
+            case SideEnum::Center:
+                $cell_x = round($map->size_width / 2)-1;
+                $cell_y = round($map->size_height / 2)-1;
+                break;
+            case SideEnum::Left:
+                $cell_x = 0;
+                $cell_y = round($map->size_height / 2)-1;
+                break;
+            case SideEnum::Right:
+                $cell_x = $map->size_width-1;
+                $cell_y = round($map->size_height / 2)-1;
+                break;
+            case SideEnum::Top:
+                $cell_x = round($map->size_width / 2)-1;
+                $cell_y = $map->size_height-1;
+                break;
+            case SideEnum::Bottom:
+                $cell_x = round($map->size_width / 2)-1;
+                $cell_y = 0;
+                break;
+            case SideEnum::LeftBottom:
+                $cell_x  = 0;
+                $cell_y = 0;
+                break;
+            case SideEnum::LeftTop:
+                $cell_x  = 0;
+                $cell_y = $map->size_height-1;
+                break;
+            case SideEnum::RightBottom:
+                $cell_x  = $map->size_width-1;
+                $cell_y = 0;
+                break;
+            case SideEnum::RightTop:
+                $cell_x  = $map->size_width-1;
+                $cell_y = $map->size_height-1;
+                break;
+            default:
+                $cell_x = round($map->size_width / 2)-1;
+                $cell_y = round($map->size_height / 2)-1;
+        }
+        $cell_x +=$offset_x;
+        $cell_y +=$offset_y;
+        $cell = CellRepository::getCell($map->id,$cell_x,$cell_y);
+        return $cell;
+    }
+
+    public static function rangeBetweenCoords($x1, $y1, $x2, $y2){
+        $abs_y = abs($y1 - $y2);
+        $abs_x = abs($x1 - $x2);
+        $range = $abs_y + $abs_x;
+
+        return $range;
+    }
+
+    public static function distanceBetweenCoords($x1, $y1, $x2, $y2){
+        $sqr_x = pow($x1 - $x2, 2);
+        $sqr_y = pow($y1 - $y2, 2);
+        $distance = sqrt($sqr_x + $sqr_y);
+        return $distance;
+    }
+
     public function checkCellForMove($cell_id): array
     {
         $cell = Cell::find($cell_id);
@@ -98,7 +169,7 @@ class MapService
         HeroService::updateCell($hero, $cell->id);
         //$hero_cell->clearObject();
         //$cell->addHero($hero);
-        $cell_with_object = MapRepository::getCell($cell->id);
+        $cell_with_object = MapRepository::getFormatedCell($cell->id);
         if ($heroes) {
             foreach ($heroes as $other_hero) {
                 if ($other_hero->updated_at > now()->addHours(-1)) {
@@ -116,7 +187,7 @@ class MapService
             $radius_y = 21;
         }
         $repository = new MapRepository();
-        $cells = $repository->getCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+        $cells = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
         $event = EventService::moveToCell($hero, $cell);
         GameEvent::dispatch($hero->id,$event['emoji'],$event['message']);
         $data = [
@@ -164,12 +235,12 @@ class MapService
                 $state_name = 'battle';
                 BattleService::startBattle($hero);
                 $data['success'] = true;
-                $data['cells'] = $repository->getCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+                $data['cells'] = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
                 $data['state_name'] = $state_name;
                 $data['event'] = EventService::transferToCell($hero, $map);
             } else {
                 $data['success'] = true;
-                $data['cells'] = $repository->getCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+                $data['cells'] = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
                 $data['state_name'] = $state_name;
                 $data['event'] = EventService::transferToCell($hero, $map);
             }

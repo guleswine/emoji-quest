@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('hero_id');
             $table->integer('quest_id');
-            $table->integer('quest_state_id');
+            $table->integer('quest_state_id')->nullable();
             $table->boolean('completed');
             $table->timestamps();
         });

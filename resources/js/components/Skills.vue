@@ -91,7 +91,7 @@ export default {
             <svg width="800" class="h-full"  >
               <foreignObject  height="60" width="180" x="180" y="20" class="text-center">
                 <p class="font-semibold col-span-2 text-center">Свободных очков:</p>
-                <p>{{hero.skill_points}}</p>
+                <p v-if="hero">{{hero.skill_points}}</p>
               </foreignObject>
                 <foreignObject :id="'object-'+skill.id" class="text-center" height="64" width="64" :x="370-((skill.row-1)*35)+((skill.col-1)*70)" :y="((skill.row-1)*65)+10" v-for="skill in skills" >
 
