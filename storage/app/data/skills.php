@@ -1,0 +1,33 @@
+<?php
+
+
+return [
+    ['name' => 'wood_construction', 'label' => 'Папа Карло','emoji'=>'wood','row'=>'1','col'=>'1','description'=>'Даёт возможность строить деревянные постройки','function'=>'learnSkillWoodConstruction'],
+    ['name' => 'notes', 'label' => 'Начинающий писатель','emoji'=>'memo','row'=>'2','col'=>'1','description'=>'Вы изучили письменность и теперь можете оставлять послания на карте','function'=>''],
+    ['name' => 'low_health_recovery', 'label' => 'Пластырь','emoji'=>'plaster','row'=>'2','col'=>'2','description'=>'Ваше здоровье медленно восстанавливается до 50%','function'=>'learnSkillLowHealthRecovery'],
+    ['name' => 'rock_construction', 'label' => 'Как насчёт стоунхенджа?','emoji'=>'rock','row'=>'3','col'=>'1','description'=>'Даёт возможность возводить каменные постройки','function'=>''],
+    ['name' => 'ranged_weapon', 'label' => 'Соколиный глаз','emoji'=>'bow_and_arrow','row'=>'3','col'=>'2','description'=>'Обучает героя владеть оружием дальнего боя','function'=>''],
+    ['name' => 'fishing', 'label' => 'Кто проживает на дне океана','emoji'=>'fishing_pole','row'=>'3','col'=>'3','description'=>'Позволяет добывать рыбу вблизи водоемов','function'=>''],
+    ['name' => 'medium_health_recovery', 'label' => 'Пилюли','emoji'=>'medication','row'=>'4','col'=>'1','description'=>'Ваше здоровье восстанавливается быстрее, восполоняя до 75% вашего уровня здоровья','function'=>''],
+    ['name' => 'opening_locks', 'label' => 'Ключ остался дома','emoji'=>'locked_with_pen','row'=>'4','col'=>'2','description'=>'Дает возможность вскрывать замки','function'=>''],
+    ['name' => 'dialogue_with_animal', 'label' => 'Доктор Дулитл','emoji'=>'dialogue_with_animal','row'=>'4','col'=>'3','description'=>'Вы понимаете язык всех зверей, а они понимают вас!','function'=>''],
+    ['name' => 'backpack_increase', 'label' => 'Мне всё это нужно','emoji'=>'luggage','row'=>'4','col'=>'4','description'=>'Увеличение ячеек инвентарей до 25 штук','function'=>''],
+    ['name' => 'brick_construction', 'label' => 'Что нам стоит дом построить','emoji'=>'brick','row'=>'5','col'=>'1','description'=>'Открывает доступ к постройкам из кирпича и так же более технологичным сооружениям','function'=>''],
+    ['name' => 'enlarged_map', 'label' => 'Пора открывать Америку','emoji'=>'world_map','row'=>'5','col'=>'2','description'=>'Глобальная карта показывает больше клеток окружающей вас местности','function'=>''],
+    ['name' => 'good_audibility', 'label' => 'Я тебя слышу','emoji'=>'ear_with_hearing_aid','row'=>'5','col'=>'3','description'=>'Вы сможете узнать о нахождении других игроков или врагов, поблизости от зоны видимости вашей карты.','function'=>''],
+    ['name' => 'pet_taming', 'label' => 'Славный мальчик','emoji'=>'person_with_dog','row'=>'5','col'=>'4','description'=>'Теперь вы можете приручить некоторых животных и сделать одного из них своим верным спутником','function'=>''],
+    ['name' => 'water_transport_management', 'label' => 'Водный мир','emoji'=>'sailboat','row'=>'5','col'=>'5','description'=>'Вы сможете использовать новый транспорт и преодолевать водные пространства','function'=>''],
+    ['name' => 'accelerated_learning', 'label' => 'Ускоренное обучение','emoji'=>'man_juggling','row'=>'6','col'=>'1','description'=>'В два раза ускоряет обучение талантам','function'=>''],
+    ['name' => 'alchemy', 'label' => 'Вы слышали о философском камне?','emoji'=>'alembic','row'=>'6','col'=>'2','description'=>'Позволяет создавать различные зелья и порошки','function'=>''],
+    ['name' => 'game_points_increase', 'label' => 'Да я только начал','emoji'=>'game_die','row'=>'6','col'=>'3','description'=>'Дает 2 дополнительных очка в бою','function'=>''],
+    ['name' => 'gardening', 'label' => 'Никаких сорняков','emoji'=>'gardening_gloves','row'=>'6','col'=>'4','description'=>'Позволяет заниматься садоводством','function'=>''],
+    ['name' => 'digger', 'label' => 'Там что-то твёрдое!','emoji'=>'spade','row'=>'6','col'=>'5','description'=>'Теперь вы можете выкапывать спрятанные под землей предметы','function'=>''],
+    ['name' => 'hight_health_recovery', 'label' => 'Я могу так весь день','emoji'=>'first_aid_bag','row'=>'6','col'=>'6','description'=>'Здоровье быстро восстанавливается до максимума','function'=>''],
+    ['name' => 'building construction', 'label' => 'Современные постройки','emoji'=>'building_construction','row'=>'7','col'=>'1','description'=>'Последний уровень строительства, позволяет строить самаые надеждные и технологичные сооружения','function'=>''],
+    ['name' => 'test1', 'label' => 'test','emoji'=>'white_question_mark','row'=>'7','col'=>'2','description'=>'','function'=>''],
+    ['name' => 'test2', 'label' => 'test','emoji'=>'white_question_mark','row'=>'7','col'=>'3','description'=>'','function'=>''],
+    ['name' => 'test3', 'label' => 'test','emoji'=>'white_question_mark','row'=>'7','col'=>'4','description'=>'','function'=>''],
+    ['name' => 'test4', 'label' => 'test','emoji'=>'white_question_mark','row'=>'7','col'=>'5','description'=>'','function'=>''],
+    ['name' => 'test5', 'label' => 'test','emoji'=>'white_question_mark','row'=>'7','col'=>'6','description'=>'','function'=>''],
+    ['name' => 'test6', 'label' => 'test','emoji'=>'white_question_mark','row'=>'7','col'=>'7','description'=>'','function'=>''],
+];
