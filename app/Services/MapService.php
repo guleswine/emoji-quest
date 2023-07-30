@@ -169,7 +169,7 @@ class MapService
         HeroService::updateCell($hero, $cell->id);
         //$hero_cell->clearObject();
         //$cell->addHero($hero);
-        $cell_with_object = MapRepository::getFormatedCell($cell->id);
+        $cell_with_object = MapRepository::getFormatedCell($cell->id,$hero->id);
         if ($heroes) {
             foreach ($heroes as $other_hero) {
                 if ($other_hero->updated_at > now()->addHours(-1)) {
@@ -187,7 +187,7 @@ class MapService
             $radius_y = 21;
         }
         $repository = new MapRepository();
-        $cells = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+        $cells = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y,$hero->id);
         $event = EventService::moveToCell($hero, $cell);
         GameEvent::dispatch($hero->id,$event['emoji'],$event['message']);
         $data = [
@@ -235,12 +235,12 @@ class MapService
                 $state_name = 'battle';
                 BattleService::startBattle($hero);
                 $data['success'] = true;
-                $data['cells'] = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+                $data['cells'] = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y, $hero->id);
                 $data['state_name'] = $state_name;
                 $data['event'] = EventService::transferToCell($hero, $map);
             } else {
                 $data['success'] = true;
-                $data['cells'] = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+                $data['cells'] = $repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y, $hero->id);
                 $data['state_name'] = $state_name;
                 $data['event'] = EventService::transferToCell($hero, $map);
             }

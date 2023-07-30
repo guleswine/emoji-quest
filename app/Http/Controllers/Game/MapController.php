@@ -46,7 +46,7 @@ class MapController extends Controller
             $radius_y = 21;
         }
 
-        $data = $this->repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+        $data = $this->repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y, $hero->id);
 
         return response()->json($data);
     }
@@ -65,7 +65,7 @@ class MapController extends Controller
         if ($map->size_height <= 41) {
             $radius_y = 41;
         }
-        $data = $this->repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y);
+        $data = $this->repository->getFormatedCells($map->id, $cell->x, $cell->y, $radius_x, $radius_y,$hero->id);
 
         return response()->json($data);
     }

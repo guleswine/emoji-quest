@@ -194,7 +194,7 @@ class BattleService
                     UnitService::updateCell($unit, $finish_cell->id);
                     $action_points = 0;
                 }
-                $cell_with_object = MapRepository::getFormatedCell($unit->cell_id);
+                $cell_with_object = MapRepository::getFormatedCell($unit->cell_id,$hero->id);
                 self::sendMoveEnemyEventForHeroes($queue_fighters, $path->pluck('id'), $cell_with_object);
             }
 

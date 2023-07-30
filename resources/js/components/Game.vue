@@ -524,6 +524,11 @@ export default {
       let uri = '/hero';
       axios.get(uri).then((response) => {
         this.hero = response.data;
+          if (!this.status.cell && this.cells){
+              let cell = this.cells.find(item => item.id == this.hero.cell_id);
+              this.status.cell = cell;
+              this.autoScrollToUnit();
+          }
         if (this.hero.state_name == 'battle'){
           this.loadBattleStatus();
         }else{

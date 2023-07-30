@@ -54,10 +54,10 @@ class MapRepository
         return $cell;
     }
 
-    public static function getFormatedCells($map_id, $x, $y, $radius_x, $radius_y)
+    public static function getFormatedCells($map_id, $x, $y, $radius_x, $radius_y,$hero_id=null)
     {
         $cells = DB::select(
-            '
+            "
         SELECT * FROM (SELECT c.id,c.name, case when co.use_as_background  then co.emoji else  c.emoji end as emoji,c.size, c.x, c.y,
                               c.surface_type,c.transfer_to_cell_id,
                               co.id as cell_object_id,
@@ -68,6 +68,9 @@ class MapRepository
                         case when co.use_as_background then null else co.emoji end as object_emoji,
                         co.object_id as object_id,
                         co.creator_hero_id as object_creator_hero_id,
+                        case when co.object_class = 'Hero' and co.object_id = :hero_id then 'i'
+                            when co.creator_hero_id = :hero_id then 'owner'
+                            else '' end as attitude,
                       greatest(trunc(EXTRACT(EPOCH FROM (b.completed_at-current_timestamp))),0) as building_animation,
                       ROW_NUMBER() OVER (PARTITION BY (c.id) ORDER BY co.priority DESC) row_numb
                FROM cells c
@@ -75,13 +78,14 @@ class MapRepository
                         left join buildings b on c.id = b.cell_id
                where c.map_id = :map_id and c.x between :left_x and :right_x and c.y between :bottom_y and :top_y) t
         where row_numb = 1
-        order by y desc, x asc',
+        order by y desc, x asc",
             [
                 'map_id'=>$map_id,
                 'left_x'=>$x - $radius_x,
                 'right_x'=>$x + $radius_x,
                 'bottom_y'=>$y - $radius_y,
                 'top_y'=>$y + $radius_y,
+                'hero_id'=>$hero_id,
         ]
         );
 
@@ -89,10 +93,10 @@ class MapRepository
 
     }
 
-    public static function getFormatedCell($cell_id)
+    public static function getFormatedCell($cell_id, $hero_id=null)
     {
         $cell = DB::selectOne(
-            '
+            "
         SELECT * FROM (SELECT c.id,c.name, case when co.use_as_background then co.emoji else  c.emoji end as emoji,c.size, c.x, c.y,
                               c.surface_type,c.transfer_to_cell_id,
                               co.id as cell_object_id,
@@ -103,15 +107,20 @@ class MapRepository
                         case when co.use_as_background then null else co.emoji end as object_emoji,
                         co.object_id as object_id,
                         co.creator_hero_id as object_creator_hero_id,
+                        case when co.object_class = 'Hero' and co.object_id = :hero_id then 'i'
+                            when co.creator_hero_id = :hero_id then 'owner'
+                            else '' end as attitude,
                       greatest(trunc(EXTRACT(EPOCH FROM (b.completed_at-current_timestamp))),0) as building_animation,
+
                       ROW_NUMBER() OVER (PARTITION BY (c.id) ORDER BY co.priority DESC) row_numb
                FROM cells c
                         left join cell_objects co on c.id = co.cell_id
                         left join buildings b on c.id = b.cell_id
                where c.id = :cell_id) t
-        where row_numb = 1',
+        where row_numb = 1",
             [
                 'cell_id'=>$cell_id,
+                'hero_id'=>$hero_id,
             ]
         );
 
