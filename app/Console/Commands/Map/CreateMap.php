@@ -4,7 +4,9 @@ namespace App\Console\Commands\Map;
 
 use App\Models\Cell;
 use App\Models\Map;
+use App\Repositories\MapRepository;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class CreateMap extends Command
 {
@@ -46,6 +48,11 @@ class CreateMap extends Command
                 $attributes['size_width'] = $size_width;
                 $attributes['size_height'] = $size_height;
             }
+        }
+        $attributes['key'] = Str::snake($name);
+        if (MapRepository::getMapByKey($attributes['key'])) {
+            $this->alert('Map with this key already exists');
+            return ;
         }
         $map = Map::factory()->create($attributes);
         $surface_type = $this->option('surface');

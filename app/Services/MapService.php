@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\DB;
 class MapService
 {
 
-    public static function getRelativeCell(int|Map $map, $side,$offset_x=0,$offset_y=0){
-        if(is_int($map)){
-            $map = MapRepository::getMap($map);
+    public static function getRelativeCell(string|Map $map, $side,$offset_x=0,$offset_y=0){
+        if(is_string($map)){
+            $map = MapRepository::getMapByKey($map);
         }
         switch ($side) {
             case SideEnum::Center:

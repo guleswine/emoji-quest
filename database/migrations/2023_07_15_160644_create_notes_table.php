@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('message');
-            $table->integer('creator_user_id')->nullable();
+            $table->integer('creator_hero_id')->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('maps', function (Blueprint $table) {
             $table->comment('Global game regions');
             $table->id();
+            $table->string('key',32)->unique()->index();
             $table->string('name');
             $table->string('emoji');
             $table->integer('start_cell_id')->nullable();

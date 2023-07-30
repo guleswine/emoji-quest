@@ -6,6 +6,7 @@ use App\Enums\SideEnum;
 use App\Models\Answer;
 use App\Models\Blueprint;
 use App\Models\Cell;
+use App\Models\CellObjectTemplate;
 use App\Models\Condition;
 use App\Models\ConditionGroup;
 use App\Models\Enemy;
@@ -33,6 +34,7 @@ use App\Services\MapGeneratorService;
 use App\Services\MapService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class GameInitialization extends Command
 {
@@ -95,6 +97,7 @@ class GameInitialization extends Command
             ['name'=>'Questions','path'=>'app/data/questions.php','model'=>Question::class,'search_attributes'=>['text']],
             ['name'=>'World controllers','path'=>'app/data/world_controllers.php','model'=>WorldController::class,'search_attributes'=>['name']],
             ['name'=>'World controller events','path'=>'app/data/world_controller_events.php','model'=>WorldControllerEvent::class,'search_attributes'=>['world_controller_id','function','object_id']],
+            ['name'=>'Cell object templates','path'=>'app/data/cell_object_templates.php','model'=>CellObjectTemplate::class,'search_attributes'=>['key']],
         ];
         foreach ($imported_data as $data_array) {
 
@@ -105,6 +108,23 @@ class GameInitialization extends Command
             foreach ($objects as $object_attr) {
                 $search_keys = array_flip($data_array['search_attributes']);
                 $fill_attributes = array_diff_key($object_attr,$search_keys);
+                foreach ($fill_attributes as $key=>$value) {
+                    if (is_array($value)){
+                        foreach ($value as $k=>$v) {
+                            if (Str::startsWith($v,'%relative_cell_id%')){
+                                $params = explode(' ',$v);
+                                $fill_attributes[$key][$k] = MapService::getRelativeCell($params[1],$params[2],$params[3],$params[4])->id;
+
+                            }
+                        }
+                    }else{
+                        if (Str::startsWith($value,'%relative_cell_id%')){
+                            $params = explode(' ',$value);
+                            $fill_attributes[$key] = MapService::getRelativeCell($params[1],$params[2],$params[3],$params[4])->id;
+
+                        }
+                    }
+                }
                 $search_attributes =  array_intersect_key($object_attr,$search_keys);
                 $data_array['model']::firstOrCreate($search_attributes,$fill_attributes);
                 $bar->advance();
@@ -116,7 +136,9 @@ class GameInitialization extends Command
 
         $this->info('Guest user created, id:'.$guest_user->id);
         $HS = new HeroService();
-        $HS->create($guest_user);
+        $hero = $HS->create($guest_user);
+        $HS::addExperience($hero,500);
+        $HS::addCoins($hero,50);
         $this->info('Guest hero created, id:'.$guest_user->id);
 
 
@@ -126,18 +148,28 @@ class GameInitialization extends Command
         $cell = MapService::getRelativeCell($map,SideEnum::Center,0,3);
         $cell_house = MapService::getRelativeCell($map_house,SideEnum::Top,0,0);
 
-        $cell->update([
-            'name'=>'Небольшой домик',
-            'emoji'=>'house_with_garden',
-            'size'=>12,
-            'transfer_to_cell_id'=>$cell_house->id
-        ]);
-        $cell_house->update([
-            'name'=>'Дверь',
-            'emoji'=>'door',
-            'size'=>12,
-            'transfer_to_cell_id'=>$cell->id
-        ]);
+        CellService::updateCellByTemplateKey($cell,'house_with_garden',['transfer_to_cell_id'=>$cell_house->id]);
+        CellService::updateCellByTemplateKey($cell_house,'door',['transfer_to_cell_id'=>$cell->id]);
+
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-1,1),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,2),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,3),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,4),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,5),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-1,5),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,0,5),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,1,5),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,5),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,4),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,3),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,2),'fence');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,1,1),'fence');
+        $cell_left = MapService::getRelativeCell($map,SideEnum::Center,-1,2);
+        $cell_right = MapService::getRelativeCell($map,SideEnum::Center,1,4);
+        MapGeneratorService::fillRectangleOnMapRegion($map,$cell_left,$cell_right,['flower_hib','flower_ros','flower_blo','flower_tul'],true);
+
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,0,2),'trail');
+        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,0,1),'trail');
 
         $cell_for_npc = MapService::getRelativeCell($map_house,SideEnum::Left,1,0);
         $npc = Unit::where('type','NPC')->first();
@@ -151,11 +183,11 @@ class GameInitialization extends Command
         $cell_cave_entrance = MapService::getRelativeCell($map,SideEnum::Center,5,-8);
 
 
-        $cell_left = MapService::getRelativeCell(3,SideEnum::LeftBottom,0,0);
-        $cell_right = MapService::getRelativeCell(3,SideEnum::RightTop,0,0);
-        MapGeneratorService::fillRectangleOnMapRegion(3,$cell_left,$cell_right,['rock'],true);
+        $cell_left = MapService::getRelativeCell('start_cave',SideEnum::LeftBottom,0,0);
+        $cell_right = MapService::getRelativeCell('start_cave',SideEnum::RightTop,0,0);
+        MapGeneratorService::fillRectangleOnMapRegion('start_cave',$cell_left,$cell_right,['rock'],true);
 
-        $cell_cave = MapService::getRelativeCell(3,SideEnum::Left,0,0);
+        $cell_cave = MapService::getRelativeCell('start_cave',SideEnum::Left,0,0);
         CellService::updateCellByTemplateKey($cell_cave_entrance,'cave_entrance',['transfer_to_cell_id'=>$cell_cave->id]);
         CellService::updateCellByTemplateKey($cell_cave,'ladder',['transfer_to_cell_id'=>$cell_cave_entrance->id]);
         $this->info('Update Cave');

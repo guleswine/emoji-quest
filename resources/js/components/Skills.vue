@@ -34,6 +34,7 @@ export default {
       });
     },
     menuOpen(event,skill){
+        if (!this.show) return;
       let screen_width = window.screen.width;
       let posX = event.clientX-30;
       let posY = event.clientY+20
@@ -50,8 +51,9 @@ export default {
       contextMenuOpen.style.display = 'block';
     },
     close(){
-      this.menuHide();
+
       this.$emit('close');
+      this.menuHide();
     },
     menuHide(){
       let contextMenuOpen =  document.getElementById("skill-menu");

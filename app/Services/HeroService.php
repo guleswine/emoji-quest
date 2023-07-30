@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\SideEnum;
 use App\Events\GameNotification;
 use App\Models\Blueprint;
 use App\Models\Cell;
@@ -31,7 +32,7 @@ class HeroService
             $map = Map::find(1);
             $x = floor($map->size_width/2);
             $y = floor($map->size_height/2);
-            $StartCell = Cell::where('x', $x)->where('y', $y)->where('map_id', 1)->first();
+            $StartCell = MapService::getRelativeCell('start_world',SideEnum::Center,0,-1);
             $hero = Hero::factory()->create([
                 'user_id'=>$user->id,
                 'name'=>$user->name,
@@ -121,6 +122,7 @@ class HeroService
         $IS->addItem(2);
         $IS->addItem(3);
         $IS->addItem(4);
+        return  $hero;
     }
 
     public static function setCell(Hero &$hero, int $cell_id)

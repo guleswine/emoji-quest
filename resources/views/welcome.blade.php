@@ -38,7 +38,7 @@
                 </div>
             @endif
 
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 fixed pt-14">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 fixed mt-14">
                 <div class="flex place-content-center">
                     <img class="w-20 h-20 woman_standing" src="/open_emoji/svg/woman_standing.svg"/>
                     <img class="w-20 h-20 keyboard" src="/open_emoji/svg/keyboard.svg"/>
@@ -68,17 +68,19 @@
                     </div>
                 @else
                 <div class="pt-6 md:pt-8 text-center space-y-4">
-                    <a href="{{ route('login') }}" class="text-2xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">Log in</a>
+                    <a href="{{ route('login') }}" class="items-center text-2xl inline-flex text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">
+                        <img class="h-10"  src="/open_emoji/lite_colored/id_button.png"/>Log in</a>
 
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="ml-4 text-2xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">Register</a>
+                        <a href="{{ route('register') }}" class="items-center ml-4 inline-flex text-2xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">
+                            <img class="h-10"  src="/open_emoji/lite_colored/new_button.png"/>Register</a>
                     @endif
                 </div>
                     <div class="md:pt-8 text-center space-y-4">
                         <div class="">
 
                         <a href="guest" class="text-2xl inline-flex text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">
-                            <img class="w-8 h-8" quest-q src="/open_emoji/lite_colored/video_game.png"/> Play as Guest</a>
+                            <img class="w-8 h-8"  src="/open_emoji/lite_colored/video_game.png"/> Play as Guest</a>
                         </div>
                     </div>
                 @endauth

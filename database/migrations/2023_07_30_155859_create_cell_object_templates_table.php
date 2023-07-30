@@ -13,19 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cell_objects', function (Blueprint $table) {
+        Schema::create('cell_object_templates', function (Blueprint $table) {
             $table->id();
-            $table->integer('cell_id');
+            $table->string('key')->index()->unique();
             $table->string('name');
-            $table->string('emoji');
+            $table->string('emoji',50);
             $table->string('object_class')->nullable();
             $table->integer('object_id')->nullable();
             $table->string('type')->nullable();
-            $table->integer('size')->default(8);
+            $table->integer('size');
             $table->integer('priority');
-            $table->boolean('use_as_background')->default(false);
-            $table->integer('creator_hero_id')->nullable();
-
+            $table->boolean('use_as_background');
             $table->timestamps();
         });
     }
@@ -37,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cell_objects');
+        Schema::dropIfExists('cell_object_templates');
     }
 };

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\CellObject;
+use App\Repositories\CellObjectRepository;
 use App\Repositories\CellRepository;
 use App\Repositories\SurfaceTemplateRepository;
 
@@ -20,7 +21,7 @@ class CellService
 
     }
 
-    public static function updateCellByTemplateKey($cell, $surface_template_key,$extra_atrributes = []){
+    public static function updateCellByTemplateKey($cell, $surface_template_key,$extra_attributes = []){
         $surface_template = SurfaceTemplateRepository::getTemplate($surface_template_key);
         $default = [
             'name'=> $surface_template->name,
@@ -28,10 +29,15 @@ class CellService
             'surface_type'=> $surface_template->type ?? $cell->surface_type,
             'size'=> $surface_template->size,
         ];
-        $data = array_merge($default, $extra_atrributes);
+        $data = array_merge($default, $extra_attributes);
         CellRepository::updateCell($cell, $data);
     }
 
+    public static function addObjectByTemplateKey($cell, $cell_object_template_key,$extra_attributes = []){
+        $cell_object_template = CellObjectRepository::getTemplate($cell_object_template_key);
+        self::addObject($cell->id, $cell_object_template->name, $cell_object_template->emoji, $cell_object_template->object_class,
+            $cell_object_template->object_id, $cell_object_template->size, $cell_object_template->use_as_background, $cell_object_template->priority);
+    }
     public static function addObject($cell_id, $name, $emoji, $object_class, $object_id, $size, $use_as_background, $priority, $creator_hero_id = null)
     {
         $cell_object = CellObject::create([

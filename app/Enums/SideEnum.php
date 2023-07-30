@@ -7,13 +7,13 @@ use BenSampo\Enum\Enum;
 
 final class SideEnum extends Enum
 {
-    const Center = 0;
-    const Left = 1;
-    const Right = 2;
-    const Top = 3;
-    const Bottom = 4;
-    const LeftBottom = 5;
-    const LeftTop = 6;
-    const RightBottom = 7;
-    const RightTop = 8;
+    const Center = 'center';
+    const Left = 'left';
+    const Right = 'right';
+    const Top = 'top';
+    const Bottom = 'bottom';
+    const LeftBottom = 'left-bottom';
+    const LeftTop = 'left-top';
+    const RightBottom = 'right-bottom';
+    const RightTop = 'right-top';
 }

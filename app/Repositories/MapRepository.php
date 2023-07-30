@@ -15,6 +15,10 @@ class MapRepository
         return Map::find($id);
     }
 
+    public static function getMapByKey($key){
+        return Map::where('key',$key)->first();
+    }
+
     public static function getRelativeCell($map,$side='center',$offset_x=0,$offset_y=0){
         switch ($side) {
             case 'center':
@@ -54,14 +58,14 @@ class MapRepository
     {
         $cells = DB::select(
             '
-        SELECT * FROM (SELECT c.id,c.name, case when co.object_class = \'Building\' then co.emoji else  c.emoji end as emoji,c.size, c.x, c.y,
+        SELECT * FROM (SELECT c.id,c.name, case when co.use_as_background  then co.emoji else  c.emoji end as emoji,c.size, c.x, c.y,
                               c.surface_type,c.transfer_to_cell_id,
                               co.id as cell_object_id,
                       co.name as object_name,
                       co.object_class as object_class,
                         co.size as object_size,
                         co.type as object_type,
-                        case when co.object_class = \'Building\' then null else co.emoji end as object_emoji,
+                        case when co.use_as_background then null else co.emoji end as object_emoji,
                         co.object_id as object_id,
                         co.creator_hero_id as object_creator_hero_id,
                       greatest(trunc(EXTRACT(EPOCH FROM (b.completed_at-current_timestamp))),0) as building_animation,
@@ -89,14 +93,14 @@ class MapRepository
     {
         $cell = DB::selectOne(
             '
-        SELECT * FROM (SELECT c.id,c.name, case when co.object_class = \'Building\' then co.emoji else  c.emoji end as emoji,c.size, c.x, c.y,
+        SELECT * FROM (SELECT c.id,c.name, case when co.use_as_background then co.emoji else  c.emoji end as emoji,c.size, c.x, c.y,
                               c.surface_type,c.transfer_to_cell_id,
                               co.id as cell_object_id,
                       co.name as object_name,
                       co.object_class as object_class,
                         co.size as object_size,
                         co.type as object_type,
-                        case when co.object_class = \'Building\' then null else co.emoji end as object_emoji,
+                        case when co.use_as_background then null else co.emoji end as object_emoji,
                         co.object_id as object_id,
                         co.creator_hero_id as object_creator_hero_id,
                       greatest(trunc(EXTRACT(EPOCH FROM (b.completed_at-current_timestamp))),0) as building_animation,

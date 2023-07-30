@@ -8,7 +8,7 @@ import Modal from "./reusable/Modal.vue";
         <template v-slot:header>
             <div class="grid grid-cols-4 bg-yellow-100 w-full h-full">
                 <div class="col-span-3 justify-self-start flex align-items-center">
-                    <img class="h-10 w-10 m-auto" src="/public/open_emoji/lite_colored/grinning_cat.png">
+                    <img class="h-10 w-10 m-auto" src="/public/open_emoji/lite_colored/hacker_cat.png">
                     <h2 class="p-3">Обучение</h2>
                 </div>
             </div>

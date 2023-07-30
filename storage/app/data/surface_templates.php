@@ -11,4 +11,11 @@ return [
     ['key'=>'door','name'=>'Дверь','emoji'=>'door','size'=>12],
     ['key'=>'ladder','name'=>'Лестница','emoji'=>'ladder','size'=>12],
     ['key'=>'rock','name'=>'Камни','emoji'=>'rock','type'=>'impassable','size'=>12],
+    ['key'=>'flower_hib','name'=>'Цветок','emoji'=>'hibiscus','size'=>8],
+    ['key'=>'flower_ros','name'=>'Цветок','emoji'=>'rose','size'=>8],
+    ['key'=>'flower_blo','name'=>'Цветок','emoji'=>'blossom','size'=>8],
+    ['key'=>'flower_tul','name'=>'Цветок','emoji'=>'tulip','size'=>8],
+    ['key'=>'trail','name'=>'Тропа','emoji'=>'brown_square','size'=>6],
+    ['key'=>'house_with_garden','name'=>'Небольшой домик','emoji'=>'house_with_garden','size'=>12],
+    ['key'=>'fence','name'=>'Забор','emoji'=>'fence','size'=>8,'type'=>'impassable'],
 ];

@@ -34,9 +34,9 @@ class MapGeneratorService
         }
     }
 
-    public static function fillRectangleOnMapRegion(int|Map $map, $left_bottom_cell,$right_top_cell,$surface_template_keys,$hollow = false){
-        if(is_int($map)){
-            $map = MapRepository::getMap($map);
+    public static function fillRectangleOnMapRegion(string|Map $map, $left_bottom_cell,$right_top_cell,$surface_template_keys,$hollow = false){
+        if(is_string($map)){
+            $map = MapRepository::getMapByKey($map);
         }
 
         $surface_templates = SurfaceTemplate::whereIn('key',$surface_template_keys)->get();
@@ -52,7 +52,7 @@ class MapGeneratorService
                     $cell->update([
                         'name'=> $surface_template->name,
                         'emoji'=> $surface_template->emoji,
-                        'surface_type'=> $surface_template->type,
+                        'surface_type'=> $surface_template->type ?? $cell->surface_type,
                         'size'=> $surface_template->size,
                     ]);
 
