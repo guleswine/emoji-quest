@@ -28,5 +28,5 @@ docker-compose exec app php artisan game:init
 
 - [Laravel](https://laravel.com/)
 - [Vue](https://vuejs.org)
-- [Ably](https://ably.com/)
+- [Centrifugo](https://centrifugal.dev)
 - [Open emoji](https://www.openmoji.org)
