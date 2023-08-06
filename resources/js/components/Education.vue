@@ -9,7 +9,7 @@ import Modal from "./reusable/Modal.vue";
             <div class="grid grid-cols-4 bg-yellow-100 w-full h-full">
                 <div class="col-span-3 justify-self-start flex align-items-center">
                     <img class="h-10 w-10 m-auto" src="/public/open_emoji/lite_colored/hacker_cat.png">
-                    <h2 class="p-3">Обучение</h2>
+                    <h2 class="p-3">Education</h2>
                 </div>
             </div>
         </template>
@@ -19,7 +19,7 @@ import Modal from "./reusable/Modal.vue";
                     <div class="self-center w-full">
                         <div class="p-4 text-center f">
                             <p class="text-xl font-mono">
-                                <b>Перемещайтесь по карте</b> - кликайте по клеткам выбирая активное действие.
+                                <b>Move around the map</b> - click on the cells choosing an active action.
                             </p>
                         </div>
                         <div >
@@ -32,7 +32,7 @@ import Modal from "./reusable/Modal.vue";
                     <div class="self-center w-full">
                         <div class="p-4 text-center f">
                             <p class="text-xl font-mono">
-                            <b>Взаимодействуйте с окружением</b> - общайтесь с NPC, подбирайте предметы, стройте свою базу.
+                              <b>Interact with the environment</b> - communicate with NPCs, pick up items, build your base.
                         </p>
                     </div>
                     <div>
@@ -45,7 +45,7 @@ import Modal from "./reusable/Modal.vue";
                     <div class="self-center w-full">
                         <div class="p-4 text-center f">
                             <p class="text-xl font-mono">
-                            <b>Используйте интерейс</b> - экипировка, карта, квесты, навыки... все это обязательно пригодится вам и расположено в нижней части экрана!
+                              <b>Use the interface</b> - equipment, map, quests, skills... all this will definitely come in handy and is located at the bottom of the screen!
                         </p>
                     </div>
                     <div>

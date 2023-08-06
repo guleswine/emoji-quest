@@ -111,8 +111,9 @@ class GameInitialization extends Command
 
 
         $HS = new HeroService();
-        $hero = $HS->create($guest_user);
         $HS->create($admin_user);
+        $hero = $HS->create($guest_user);
+
         $HS::addExperience($hero,500);
         $HS::addCoins($hero,50);
         $this->info('Guest hero created, id:'.$guest_user->id);
