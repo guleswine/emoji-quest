@@ -10,10 +10,10 @@ export default {
       left_equipment: [],
       right_equipment: [],
       tabs:{
-        items: 'Предметы',
-        equipments: 'Экипировка',
-        resources: 'Ресурсы',
-        appearance: 'Внешность',
+        items: 'Items',
+        equipments: 'Equipments',
+        resources: 'Resources',
+        appearance: 'Appearance',
       },
       inventories:{
         items: [],
@@ -177,7 +177,7 @@ export default {
       <div class="modal-wrapper">
         <div class="modal-container shadow bg-white mx-auto w-screen h-[90vh] lg:h-[65vh] lg:w-[65vw]">
           <div class="h-[6vh] lg:h-[5vh] w-full bg-slate-100 grid grid-cols-2">
-            <div><h2 class="p-3">Инвентарь</h2></div>
+            <div><h2 class="p-3">Inventory</h2></div>
             <div class="text-right p-3">
             <button class="hover:shadow-lg" @click="$emit('close')"><img class="h-6 w-6 m-auto" src="/public/open_emoji/lite_colored/cross_mark.png"></button>
             </div>

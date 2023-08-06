@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('size')->default(8);
             $table->integer('transfer_to_cell_id')->nullable();
             $table->timestamps();
+            $table->unique(['map_id', 'x', 'y']);
         });
     }
 

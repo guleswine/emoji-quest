@@ -37,7 +37,7 @@ class ReceivingItemQuest
             ->get();
         foreach ($hero_quest_states as $state) {
             $hero_quest_state = HeroQuestState::find($state->id)->update(['completed'=>true]);
-            GameNotification::dispatch($event->hero->id, 'info', 'Квестовое задание выполнено!');
+            GameNotification::dispatch($event->hero->id, 'info', 'Quest task completed!');
         }
 
     }

@@ -14,6 +14,7 @@ use App\Services\AttackService;
 use App\Services\BattleService;
 use App\Services\EventActionService;
 use App\Services\HeroService;
+use App\Services\MapGeneratorService;
 use App\Services\MapService;
 use App\Services\PathSearchService;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -32,8 +33,8 @@ class TestController extends Controller
      */
     public function index()
     {
-        Enemy::firstOrCreate(['name'=>'Летучая мышь', 'emoji'=>'bat','attack'=>3,'armor'=>1,'health'=>15,'attack_range'=>1,'dodge'=>1,
-            'critical_hit'=>1,'action_points'=>6,'drop_item_id'=>5,'experience'=>10,'attack_areas'=>["head"]]);
+        MapGeneratorService::loadEmojies();
+
 
         dd('ok');
         $free_cell = Cell::where('map_id', 3)

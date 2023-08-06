@@ -20,7 +20,7 @@ class AttackService
         $hero_cell = Cell::find($hero->cell_id);
         $hero_stats = HeroStat::where('hero_id', $hero->id)->get()->keyBy('attribute');
         if (PathSearchService::rangeBetwenCells($hero_cell, $cell) > $hero_stats['attack_range']->value) {
-            $data = ['notify'=>['type'=>'info', 'message'=>'Цель слишком далеко']];
+            $data = ['notify'=>['type'=>'info', 'message'=>'Target too far']];
 
             return $data;
         }
@@ -30,7 +30,7 @@ class AttackService
             if ($cell_object->type == 'enemy') {
                 $action_points = $hero->getCurrentStat('action_points');
                 if ($action_points < 2) {
-                    return ['notify'=>['type'=>'info', 'message'=>'Не достаточно очков действий для атаки.']];
+                    return ['notify'=>['type'=>'info', 'message'=>'Not enough action points to attack.']];
                 }
                 $enemy = Enemy::find($unit->object_id);
                 $damage = self::attackEnemyByHero($enemy, $unit, $hero, $hero_stats, $area);

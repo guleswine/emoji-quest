@@ -1,7 +1,7 @@
 <?php
 
 return [
-    ['name' => 'Отсутствие стартового квеста'],
-    ['name' => 'Отсутствие врагов в пещере'],
-    ['name' => 'Сдача стартового квеста'],
+    ['name' => 'No starting quest'],
+    ['name' => 'No enemies in the cave'],
+    ['name' => 'Turn in the starting quest'],
 ];

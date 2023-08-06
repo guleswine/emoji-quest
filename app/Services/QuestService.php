@@ -36,9 +36,9 @@ class QuestService
         if ($QS->final) {
             $HQ = HeroQuest::where('hero_id', $HQS->hero_id)->where('quest_id', $QS->quest_id)->first();
             $HQ->update(['completed'=>true]);
-            GameNotification::dispatch($HQS->hero_id, 'info', 'Квест выполнен!');
+            GameNotification::dispatch($HQS->hero_id, 'info', 'Quest completed!');
         } else {
-            GameNotification::dispatch($HQS->hero_id, 'info', 'Квестовое задание выполнено!');
+            GameNotification::dispatch($HQS->hero_id, 'info', 'Quest task completed!');
         }
     }
 

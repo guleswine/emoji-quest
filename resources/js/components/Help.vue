@@ -23,37 +23,37 @@ export default {
     >
       <div class="bg-white h-full w-full overflow-hidden shadow-sm">
         <div class="header h-10 bg-slate-100 hidden 2xl:block">
-          <h3 class="py-2 pl-4 font-semibold ">Справка</h3>
+          <h3 class="py-2 pl-4 font-semibold ">Help</h3>
         </div>
         <div class="body p-4 overflow-y-scroll h-[95%]">
           <div class="space-y-5 ">
             <div class="p-3 bg-slate-100 shadow-lg rounded-lg">
-              <h3 class=" font-semibold border-b border-gray-400">Управление</h3>
+              <h3 class=" font-semibold border-b border-gray-400">Control</h3>
               <p class="text-xs font-mono">
-                <b>Клик по полю</b> - показывает доступные действия.<br>
-                <b>Двойной клик</b> - запускает приоритетное активное действие.
+                <b>Click on the field</b> - shows available actions.<br>
+                <b>Double click</b> - runs the priority active action.
               </p>
             </div>
             <div class="p-3 bg-slate-100 shadow-lg rounded-lg">
-              <h3 class=" font-semibold border-b border-gray-400">Нижнее меню</h3>
+              <h3 class=" font-semibold border-b border-gray-400">Lower menu</h3>
               <p class="text-xs font-mono">
-                <b>Компасс</b> - находит вашего героя на карте.<br>
-                <b>Рюкзак</b> - окно экипировки и инвентаря вашего героя.<br>
-                <b>Глобальная карта</b> - отрисовывает больше клеток карты.<br>
-                <b>Навыки</b> - древо доступых навыков.<br>
-                <b>Квесты</b> - список взятых квестов.<br>
-                <b>Таланты</b> - список умений прокачивающихся автоматически.<br>
+                <b>Compass</b> - finds your hero on the map.<br>
+                <b>Backpack</b> - your hero's equipment and inventory window.<br>
+                <b>Global map</b> - draws more map cells.<br>
+                <b>Skills</b> - a tree of available skills.<br>
+                <b>Quests</b> - list of accepted quests.<br>
+                <b>Talents</b> - a list of skills that are pumped automatically.<br>
               </p>
             </div>
             <div class="p-3 bg-slate-100 shadow-lg rounded-lg">
-              <h3 class=" font-semibold border-b border-gray-400">Бой</h3>
+              <h3 class=" font-semibold border-b border-gray-400">Fight</h3>
               <p class="text-xs font-mono">
-                <b>Атака в голову</b> - основной урон +25%<br>
-                <b>Атака в туловище</b> - обычный урон<br>
-                <b>Атака в конечности</b> - 75% от основого урона и -1 очко действия на следующий ход<br>
-                <b>Защита</b> - при атаке в защищенную часть, пропускается лишь 50% основого урона и не применяются дополнительные эффекты или множители, установка защиты немедленно завершает ход<br>
-                <b>Рассчет урона</b> - из атаки противника вычитается ваш показатель защиты<br>
-                <b>Расход очков</b> - 1 очко действия тратится на перемещение, 2 очка действия на атаку и 1 очко действия на установку защиты (которая сразу завершает ход)
+                <b>Head attack</b> - main damage +25%<br>
+                <b>Attack body</b> - normal damage<br>
+                <b>Limb Attack</b> - 75% of base damage and -1 action point on next turn<br>
+                <b>Protection</b> - when attacking a protected part, only 50% of the main damage is skipped and additional effects or multipliers are not applied, setting protection immediately ends the turn<br>
+                <b>Damage calculation</b> - your defense value is subtracted from the enemy attack<br>
+                <b>Spending Points</b> - 1 action point spent on movement, 2 action points on attack, and 1 action point on defense (which immediately ends the turn)
               </p>
             </div>
           </div>

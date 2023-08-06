@@ -35,8 +35,7 @@ class EventService
         $emoji = 'crossed_swords';
         $message = __(
             'game.events.attack_' . $attack_area,
-            ['name_attacker'=>$unit->name, 'name_target'=>$hero->name, 'damage'=>$damage],
-            'ru'
+            ['name_attacker'=>$unit->name, 'name_target'=>$hero->name, 'damage'=>$damage]
         );
         GameEvent::dispatch($hero->id, $emoji, $message);
         UserGameEvent::create(
@@ -53,8 +52,7 @@ class EventService
         $emoji = 'crossed_swords';
         $message = __(
             'game.events.attack_' . $attack_area,
-            ['name_attacker'=>$hero->name, 'name_target'=>$unit->name, 'damage'=>$damage],
-            'ru'
+            ['name_attacker'=>$hero->name, 'name_target'=>$unit->name, 'damage'=>$damage]
         );
 
         GameEvent::dispatch($hero->id, $emoji, $message);
@@ -69,7 +67,7 @@ class EventService
 
     public static function moveToCell(Hero $hero, Cell $cell)
     {
-        $message = "Ваш герой $hero->name перемещается на клетку (x=$cell->x,y=$cell->y)";
+        $message = "Your hero $hero->name moves to a cell (x=$cell->x,y=$cell->y)";
         $emoji = 'footprints';
         UserGameEvent::create(
             [
@@ -88,7 +86,7 @@ class EventService
 
     public static function transferToCell(Hero $hero, Map $map)
     {
-        $message = "Ваш герой $hero->name перемещается на карту $map->name";
+        $message = "Your hero $hero->name is moved to the map $map->name";
         $emoji = 'globe_with_meridians';
         UserGameEvent::create(
             [

@@ -91,14 +91,14 @@ class MapService
     {
         $cell = Cell::find($cell_id);
         if ($cell->surface_type_name == 'impassable' or $cell->object_name == 'building') {
-            $notify = ['type'=>'info', 'message'=>'Поле недоступно для перемещения'];
+            $notify = ['type'=>'info', 'message'=>'The field is not available for moving'];
 
             return ['success'=>false, 'notify'=>$notify];
         }
         $hasHeroes = DB::table('heroes')->where('cell_id', $cell_id)->exists();
         $hasUnits = DB::table('units')->where('cell_id', $cell_id)->exists();
         if (in_array($cell->object_name, ['building', 'hero', 'NPC', 'enemy', 'unit'])) {
-            $notify = ['type'=>'info', 'message'=>'Поле занято игроком/персонажем, сюда невозможно перейти.'];
+            $notify = ['type'=>'info', 'message'=>'The field is occupied by a player/character, it is impossible to go here.'];
 
             return ['success'=>false, 'notify'=>$notify];
         }
@@ -142,7 +142,7 @@ class MapService
         $PS->setStartCellById($hero->cell_id)->setFinishCellById($cell_id)->loadCells();
         $path = $PS->getShortestPath();
         if (blank($path)) {
-            return ['notify'=>['type'=>'info', 'message'=>'Не удается найти путь до этой точки']];
+            return ['notify'=>['type'=>'info', 'message'=>'Can\'t find a way to this point']];
         }
         if ($hero->state_name == 'battle') {
             $queues = BattleQueueUnit::where('battle_id', $hero->state_object_id)->orderBy('order')->get();
@@ -153,11 +153,11 @@ class MapService
             }
             $isFighterHero = ($fighter->object_name == 'hero' and $fighter->object_id == $hero->id);
             if (!$isFighterHero) {
-                return ['notify'=>['type'=>'info', 'message'=>'Сейчас не ваша очередь ходить']];
+                return ['notify'=>['type'=>'info', 'message'=>'Now it\'s not your turn to go']];
             }
             $action_points = $hero->getCurrentStat('action_points');
             if ($action_points < ($path->count() - 1)) {
-                return ['notify'=>['type'=>'info', 'message'=>'Не достаточно очков действий для этого пути.']];
+                return ['notify'=>['type'=>'info', 'message'=>'Not enough action points for this path.']];
             }
             $new_ap = $action_points - ($path->count() - 1);
             $hero->updateCurrentStat('action_points', $new_ap);
@@ -245,7 +245,7 @@ class MapService
                 $data['event'] = EventService::transferToCell($hero, $map);
             }
         } else {
-            $notify = ['type'=>'info', 'message'=>'Вы пока не можете перейти в другую локацию'];
+            $notify = ['type'=>'info', 'message'=>'You can\'t move to another location yet'];
             $data = [
                 'success'=>false,
                 'notify'=>$notify,

@@ -42,6 +42,7 @@ class Map extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('Key'),
             Text::make('Name'),
             Text::make('Emoji'),
         ];

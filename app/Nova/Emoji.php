@@ -30,7 +30,7 @@ class Emoji extends Resource
      * @var array
      */
     public static $search = [
-        'name',
+        'key',
     ];
 
     /**
@@ -43,7 +43,7 @@ class Emoji extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name'),
+            Text::make('Key'),
             Avatar::make('Img'),
         ];
     }
@@ -94,6 +94,6 @@ class Emoji extends Resource
 
     public function title()
     {
-        return $this->name;
+        return $this->key;
     }
 }

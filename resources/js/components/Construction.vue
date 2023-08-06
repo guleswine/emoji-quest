@@ -56,7 +56,7 @@ export default {
       <div class="modal-wrapper">
         <div class="modal-container shadow bg-white mx-auto w-screen h-screen lg:h-[60vh] lg:w-[70vw]">
           <div class="h-[6vh] lg:h-[8%] w-full bg-slate-100 grid grid-cols-2">
-            <div><h2 class="p-3">Постройка</h2></div>
+            <div><h2 class="p-3">Building</h2></div>
             <div class="text-right p-3">
               <button class="hover:shadow-lg" @click="$emit('close')"><img class="h-6 w-6 m-auto" src="/public/open_emoji/lite_colored/cross_mark.png"></button>
             </div>
@@ -66,12 +66,12 @@ export default {
             <!-- Окно выбранного чертежа -->
             <div class="col-span-2 h-[42vh] lg:col-span-1 lg:h-full  bg-gray-200">
               <div class="flex h-full" v-if="!selected_blueprint" >
-                <p class="text-4xl m-auto text-slate-500 font-bold">Выберите чертеж</p>
+                <p class="text-4xl m-auto text-slate-500 font-bold">Select blueprint</p>
               </div>
               <div class="pt-10" v-if="selected_blueprint" >
                 <div class="h-full grid grid-cols-3">
                   <div class="grid grid-cols-2 h-1/3">
-                    <p class="font-semibold col-span-2 text-center">Требуется</p>
+                    <p class="font-semibold col-span-2 text-center">Required</p>
                     <div class="flex"><img class="h-6 w-6 lg:h-8 lg:w-8 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/coin.png"></div>
                     <div class="place-self-center">{{selected_blueprint.cost_coins}}/{{hero.coins}}</div>
                     <div class="flex"><img class="h-6 w-6 lg:h-8 lg:w-8 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/hourglass_not_done.png"></div>
@@ -82,7 +82,7 @@ export default {
                   </div>
                   <div class="block place-self-center p-2">
                     <button class="p-2 inline-block bg-slate-400 active:bg-slate-600 hover:bg-slate-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg active:shadow-lg transition duration-150 ease-in-out"
-                            id="show-modal" @click="$emit('buildBuilding',selected_blueprint.id)" ><img class="h-12 w-12 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/hammer_and_wrench.png">Построить</button>
+                            id="show-modal" @click="$emit('buildBuilding',selected_blueprint.id)" ><img class="h-12 w-12 m-auto"  style="max-width: none;" src="/public/open_emoji/lite_colored/hammer_and_wrench.png">Build</button>
                   </div>
                 </div>
                 <div class="text-center">
@@ -102,7 +102,7 @@ export default {
                         class="inline-block px-2 py-2 active:bg-slate-600  hover:bg-slate-500 text-white rounded"
                         :class="[tab === 'defence' ? 'bg-slate-600' : 'bg-slate-400']"
                     >
-                      Оборона
+                      Defense
                     </button>
                   </li>
                   <li>
@@ -111,7 +111,7 @@ export default {
                         class="inline-block px-2 py-2 active:bg-slate-600  hover:bg-slate-500 text-white rounded"
                         :class="[tab === 'settlement' ? 'bg-slate-600' : 'bg-slate-400']"
                     >
-                      Поселение
+                      Settlement
                     </button>
                   </li>
                 </ul>
@@ -119,7 +119,7 @@ export default {
                   <div v-for="(selected_blueprints, name) in blueprints">
                     <div class="" v-if="tab === name">
                       <div class="flex h-full w-full" v-if="!selected_blueprints || !selected_blueprints.length" >
-                        <p class="text-2xl m-auto text-slate-400 font-bold mt-8">Чертежи отутствуют</p>
+                        <p class="text-2xl m-auto text-slate-400 font-bold mt-8">No blueprints</p>
                       </div>
                       <div class="inline-grid grid-cols-5 ">
                         <div

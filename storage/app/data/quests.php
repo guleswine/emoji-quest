@@ -1,5 +1,5 @@
 <?php
 
 return [
-    ['name' => 'Мышиная охота','description'=>"Кот Феликс попросил вас раздобыть лакомство, в виде мышки.\r\nКоторую вероятно можно будет найти в пещере находящейся севернее от его дома."],
+    ['name' => 'Mouse Hunt','description'=>"Felix the Cat asked you to get a delicacy in the form of a mouse.\r\nWhich can probably be found in a cave north of his house."],
 ];

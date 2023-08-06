@@ -36,7 +36,7 @@ export default {
       <div class="grid grid-cols-4 bg-slate-100 w-full h-full">
         <div class="col-span-3 justify-self-start flex align-items-center">
           <img class="h-10 w-10 m-auto" src="/public/open_emoji/lite_colored/man_juggling.png">
-          <h2 class="p-3">Таланты</h2>
+          <h2 class="p-3">Talents</h2>
         </div>
         <div class="text-right p-3">
           <button class="hover:shadow-lg" @click="$emit('close')"><img class="h-6 w-6 m-auto" src="/public/open_emoji/lite_colored/cross_mark.png"></button>

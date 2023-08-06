@@ -1,5 +1,5 @@
 <?php
 
 return [
-    ['name' => 'Спавн врагов в пещере','condition_group_id'=>2],
+    ['name' => 'Enemy spawn in the cave','condition_group_id'=>2],
 ];

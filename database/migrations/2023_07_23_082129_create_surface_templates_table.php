@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('key');
             $table->string('name');
-            $table->string('emoji');
+            $table->string('emoji')->nullable();
             $table->string('type')->nullable();
             $table->integer('size');
             $table->timestamps();

@@ -4,7 +4,9 @@ namespace App\Console\Commands\Map;
 
 use App\Models\Cell;
 use App\Models\Map;
+use App\Models\SurfaceTemplate;
 use App\Repositories\MapRepository;
+use App\Repositories\SurfaceTemplateRepository;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -55,28 +57,13 @@ class CreateMap extends Command
             return ;
         }
         $map = Map::factory()->create($attributes);
-        $surface_type = $this->option('surface');
-        if ($surface_type) {
-            switch ($surface_type) {
-                case 'forest':
-                    $cell_name = 'Дерево';
-                    $cell_emoji = 'deciduous_tree';
-                    $surface_type = 'ground';
-                    $size =8;
-                    break;
-                case 'house':
-                    $cell_name = 'Деревянный пол';
-                    $cell_emoji = 'brown_square';
-                    $surface_type = 'wooden_floor';
-                    $size =14;
-                    break;
-                case 'cave':
-                    $cell_name = 'Каменистый пол';
-                    $cell_emoji = null;
-                    $surface_type = 'stone';
-                    $size =15;
-                    break;
-            }
+        $surface_template_key = $this->option('surface');
+        if ($surface_template_key) {
+            $surface_template = SurfaceTemplateRepository::getTemplate($surface_template_key);
+            $cell_name = $surface_template->name;
+            $cell_emoji = $surface_template->emoji;
+            $surface_type = $surface_template->type;
+            $size = $surface_template->size;
 
         }else{
             $cell_name = $this->ask('Cells name?');
@@ -90,6 +77,8 @@ class CreateMap extends Command
         $this->info('Start create cells for map...');
         $bar->start();
 
+        $map_cells = [];
+        $counter = 0;
         for ($x = 0; $x < $map->size_width; $x++) {
             for ($y = 0; $y < $map->size_height; $y++) {
                 $cell_attributes = [];
@@ -106,10 +95,19 @@ class CreateMap extends Command
                 if ($surface_type) {
                     $cell_attributes['surface_type'] = $surface_type;
                 }
-                Cell::factory()->create($cell_attributes);
+                $map_cells[] = $cell_attributes;
+                //Cell::factory()->create($cell_attributes);
                 $bar->advance();
+
+                $counter++;
+                if ($counter>=5000){
+                    Cell::insert($map_cells);
+                    $counter=0;
+                    $map_cells=[];
+                }
             }
         }
+        Cell::insert($map_cells);
 
         $start_side = $this->option('start-side');
         if ($start_side){
@@ -153,7 +151,7 @@ class CreateMap extends Command
         $bar->finish();
 
         $this->newLine();
-        $this->info('Map created, id:' . $map->id);
+        $this->info('Map created, key:' . $map->key);
 
         return Command::SUCCESS;
     }

@@ -50,7 +50,7 @@
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <a class="inline-flex items-center px-1 pt-1 border-t-4 border-gray-400 text-m font-medium leading-5 text-gray-900 focus:outline-none focus:border-gray-700 transition duration-150 ease-in-out" href="/game">
-                      Игра
+                      Game
                   </a>
               </div>
           </div>
@@ -93,7 +93,7 @@
         <button
             @click.prevent="toggleEvents()"
             class="w-5/12 h-8 p-1 my-auto rounded text-white bg-slate-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300">
-			<span class="block transform origin-center font-bold">События</span>
+			<span class="block transform origin-center font-bold">Events</span>
         </button>
 
           <button
@@ -105,7 +105,7 @@
         <button
             @click.prevent="toggleHelp()"
             class="w-5/12 float-right h-8 p-1 my-auto rounded text-white bg-slate-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300">
-			<span class="block transform origin-center font-bold">Справка</span>
+			<span class="block transform origin-center font-bold">Help</span>
         </button>
       </div>
     </div>
@@ -176,34 +176,34 @@
   </div>
   <div id="cell-menu" class="context-menu-open">
     <ul>
-      <menu-item v-if="status.cell && status.cell.object_class=='Item'" @click="takeItem(status.cell)" emoji="palm_down_hand">Подобрать</menu-item>
+      <menu-item v-if="status.cell && status.cell.object_class=='Item'" @click="takeItem(status.cell)" emoji="palm_down_hand">Pick up</menu-item>
       <template v-if="hero && hero.state_name == 'battle'">
         <template v-if="status.cell && status.cell.object_type == 'enemy'">
-            <menu-item  @click="attack(status.cell,'head')" emoji="crossed_swords">Атаковать голову</menu-item>
-            <menu-item  @click="attack(status.cell,'body')" emoji="crossed_swords">Атаковать туловище</menu-item>
-            <menu-item  @click="attack(status.cell,'limbs')" emoji="crossed_swords">Атаковать конечности</menu-item>
+            <menu-item  @click="attack(status.cell,'head')" emoji="crossed_swords">Attack head</menu-item>
+            <menu-item  @click="attack(status.cell,'body')" emoji="crossed_swords">Attack body</menu-item>
+            <menu-item  @click="attack(status.cell,'limbs')" emoji="crossed_swords">Attack limbs</menu-item>
         </template>
         <template v-if="status.cell && status.cell.object_class=='Hero'  && status.cell.object_id==hero.id">
-          <menu-item  @click="defence(hero.id,'head')" emoji="brown_shield">Защитить голову</menu-item>
-          <menu-item  @click="defence(hero.id,'body')" emoji="brown_shield">Защитить туловище</menu-item>
-          <menu-item  @click="defence(hero.id,'limbs')" emoji="brown_shield">Защитить конечности</menu-item>
+          <menu-item  @click="defence(hero.id,'head')" emoji="brown_shield">Protect head</menu-item>
+          <menu-item  @click="defence(hero.id,'body')" emoji="brown_shield">Protect body</menu-item>
+          <menu-item  @click="defence(hero.id,'limbs')" emoji="brown_shield">Protect limbs</menu-item>
         </template>
-        <menu-item v-if="status.cell" @click="moveToCell(status.cell.id)" emoji="footprints">Перейти</menu-item>
+        <menu-item v-if="status.cell" @click="moveToCell(status.cell.id)" emoji="footprints">Move</menu-item>
       </template>
       <template v-if="hero && hero.state_name == 'traveler'">
-          <menu-item v-if="status.cell && status.cell.transfer_to_cell_id" @click="transferToCell(status.cell.id,status.cell.transfer_to_cell_id)" emoji="globe_with_meridians">Переместиться</menu-item>
-          <menu-item v-if="status.cell && status.cell.object_class=='Unit'" @click="interactionWithUnit(status.cell.object_id)" emoji="chats">Взаимодействовать</menu-item>
-          <menu-item v-if="status.cell && status.cell.object_class=='Note'" @click="readNote(status.cell.object_id)" emoji="magnifying_glass_tilted_left">Прочитать</menu-item>
-          <menu-item v-if="status.cell && status.cell.object_class=='Note'" @click="destroyNote(status.cell.id,status.cell.object_id)" emoji="delete">Стереть</menu-item>
-          <menu-item v-if="status.cell && !status.cell.transfer_to_cell_id" @click="moveToCell(status.cell.id)" emoji="footprints">Перейти</menu-item>
+          <menu-item v-if="status.cell && status.cell.transfer_to_cell_id" @click="transferToCell(status.cell.id,status.cell.transfer_to_cell_id)" emoji="globe_with_meridians">Relocate</menu-item>
+          <menu-item v-if="status.cell && status.cell.object_class=='Unit'" @click="interactionWithUnit(status.cell.object_id)" emoji="chats">Interact</menu-item>
+          <menu-item v-if="status.cell && status.cell.object_class=='Note'" @click="readNote(status.cell.object_id)" emoji="magnifying_glass_tilted_left">Read</menu-item>
+          <menu-item v-if="status.cell && status.cell.object_class=='Note'" @click="destroyNote(status.cell.id,status.cell.object_id)" emoji="delete">Erase</menu-item>
+          <menu-item v-if="status.cell && !status.cell.transfer_to_cell_id" @click="moveToCell(status.cell.id)" emoji="footprints">Move</menu-item>
           <menu-item v-if="status.cell && status.cell.surface_type=='ground' && !status.cell.object_class && !status.cell.transfer_to_cell_id"
-                     @click="open('construction')" emoji="hammer_and_wrench">Постройка</menu-item>
+                     @click="open('construction')" emoji="hammer_and_wrench">Building</menu-item>
 
-          <menu-item v-if="status.cell && skills && skills.notes && !status.cell.object_class" @click="writeNote(status.cell)" emoji="memo">Оставить записку</menu-item>
-          <menu-item v-if="status.cell && status.cell.object_creator_hero_id == hero.id && status.cell.object_class=='Building'" @click="destroyBuilding(status.cell.id)" emoji="delete">Разрушить</menu-item>
+          <menu-item v-if="status.cell && skills && skills.notes && !status.cell.object_class" @click="writeNote(status.cell)" emoji="memo">Write a note</menu-item>
+          <menu-item v-if="status.cell && status.cell.object_creator_hero_id == hero.id && status.cell.object_class=='Building'" @click="destroyBuilding(status.cell.id)" emoji="delete">Destroy</menu-item>
 
       </template>
-        <menu-item v-if="status.cell && hero.id==5"><a :href="'/nova/resources/cells/'+status.cell.id+'/edit'" target="_blank">Редактировать</a></menu-item>
+        <menu-item v-if="status.cell && hero.id==1"><a :href="'/nova/resources/cells/'+status.cell.id+'/edit'" target="_blank">Edit</a></menu-item>
     </ul>
   </div>
     </div>
@@ -299,8 +299,7 @@ export default {
       }
     this.$nextTick(function () {
 
-      // Код, который будет запущен только после
-      // отрисовки всех представлений
+
 
     })
 
@@ -420,7 +419,7 @@ export default {
       p_damage.innerHTML = damage;
 
       document.getElementById("cell-border-"+cell_id).appendChild(p_damage);
-      let start = Date.now(); // запомнить время начала
+      let start = Date.now();
       let timer = setInterval(function() {
         let timePassed = Date.now() - start;
         if (timePassed >= 1000) {

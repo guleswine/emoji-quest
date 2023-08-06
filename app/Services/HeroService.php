@@ -96,14 +96,14 @@ class HeroService
         }
         //Создание слотов экпипировки
         $equipment = [
-            ['name'=>'Головной убор', 'type'=>'equipment', 'category'=>'head', 'side'=>'left', 'sort_order'=>1],
-            ['name'=>'Скин', 'type'=>'appearance', 'category'=>'appearance', 'side'=>'right', 'sort_order'=>1],
-            ['name'=>'Кисти', 'type'=>'equipment', 'category'=>'hands', 'side'=>'left', 'sort_order'=>2],
-            ['name'=>'Торс', 'type'=>'equipment', 'category'=>'torso', 'side'=>'right', 'sort_order'=>2],
-            ['name'=>'Левая рука', 'type'=>'equipment', 'category'=>'left_hand', 'side'=>'left', 'sort_order'=>3],
-            ['name'=>'Правая рука', 'type'=>'equipment', 'category'=>'right_hand', 'side'=>'right', 'sort_order'=>3],
-            ['name'=>'Ступни', 'type'=>'equipment', 'category'=>'feet', 'side'=>'left', 'sort_order'=>4],
-            ['name'=>'Ноги', 'type'=>'equipment', 'category'=>'legs', 'side'=>'right', 'sort_order'=>4],
+            ['name'=>'Headgear', 'type'=>'equipment', 'category'=>'head', 'side'=>'left', 'sort_order'=>1],
+            ['name'=>'Skin', 'type'=>'appearance', 'category'=>'appearance', 'side'=>'right', 'sort_order'=>1],
+            ['name'=>'Brushes', 'type'=>'equipment', 'category'=>'hands', 'side'=>'left', 'sort_order'=>2],
+            ['name'=>'torso', 'type'=>'equipment', 'category'=>'torso', 'side'=>'right', 'sort_order'=>2],
+            ['name'=>'Left hand', 'type'=>'equipment', 'category'=>'left_hand', 'side'=>'left', 'sort_order'=>3],
+            ['name'=>'Right hand', 'type'=>'equipment', 'category'=>'right_hand', 'side'=>'right', 'sort_order'=>3],
+            ['name'=>'Feet', 'type'=>'equipment', 'category'=>'feet', 'side'=>'left', 'sort_order'=>4],
+            ['name'=>'Legs', 'type'=>'equipment', 'category'=>'legs', 'side'=>'right', 'sort_order'=>4],
         ];
         foreach ($equipment as $equip) {
             $equip_attr = $equip;
@@ -155,7 +155,7 @@ class HeroService
     {
         $hero->lvl++;
         $hero->skill_points++;
-        GameNotification::dispatch($hero->id, 'info', 'Вы получили новый уровень');
+        GameNotification::dispatch($hero->id, 'info', 'You got a new level');
     }
 
     public static function addCoins(Hero &$hero, int $count)

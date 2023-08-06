@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('emoji', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->jsonb('tags');
-            $table->string('type');
-            $table->string('category');
+            $table->string('key',50)->unique();
+            $table->jsonb('tags')->nullable();
+            $table->string('type')->nullable();
+            $table->string('category')->nullable();
             $table->string('img');
-            $table->string('unicode',50);
+            $table->string('unicode',50)->nullable();
             $table->timestamps();
         });
     }

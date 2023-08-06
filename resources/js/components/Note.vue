@@ -56,7 +56,7 @@ export default {
           <div class="modal-body  w-full">
             <div class="text-center pb-1" v-if="create">
               <textarea id="note-message" class="resize-none w-[90%]" maxlength="200" placeholder="Текст до 200 символов" rows="7"></textarea>
-              <button class="bg-slate-400 px-2 py-1  active:bg-slate-600  hover:bg-slate-500 text-white rounded" @click="createNote">Написать</button>
+              <button class="bg-slate-400 px-2 py-1  active:bg-slate-600  hover:bg-slate-500 text-white rounded" @click="createNote">Write</button>
             </div>
               <div class="text-center p-2" v-if="read">
                   <p v-if="note" class="whitespace-pre-wrap">{{note.message}}</p>

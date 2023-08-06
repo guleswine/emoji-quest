@@ -15,7 +15,7 @@ class Cell extends Model
 
     public function emojiObject()
     {
-        return $this->belongsTo(Emoji::class, 'emoji', 'name');
+        return $this->belongsTo(Emoji::class, 'emoji', 'key');
     }
 
     public function surfaceType()

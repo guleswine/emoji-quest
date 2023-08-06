@@ -59,25 +59,31 @@ class GameInitialization extends Command
      */
     public function handle()
     {
-        $this->call('map:create',
-            ['name'=>'Start world','size'=>config('emojiquest.default_map_size'),'--surface'=>'forest',
-                '--start-side'=>'center','--ambient-color'=>'rgb(255 255 255)']);
 
-        $this->call('map:create',
-            ['name'=>'Start house','size'=>'11:11','--surface'=>'house',
-                '--start-side'=>'top','--ambient-color'=>'rgb(255 237 213)']);
-        $this->call('map:create',
-            ['name'=>'Start cave','size'=>'15:15','--surface'=>'cave',
-                '--start-side'=>'left','--ambient-color'=>'rgb(63 63 70)']);
-
+        $this->call('data:load',['name'=>'Surface templates','path'=>'app/data/surface_templates.php','model'=>SurfaceTemplate::class,'search-attributes'=>['key']]);
+        MapGeneratorService::loadEmojies();
+        $objects = include storage_path('app/data/maps.php');
+        foreach ($objects as $object_attr) {
+            $this->call('map:create',
+                ['name'=>$object_attr['name'],'size'=>$object_attr['size'],'--surface'=>$object_attr['surface'],
+                    '--ambient-color'=>$object_attr['ambient-color']]);
+        }
 
 
+
+        $admin_user = User::firstOrCreate([
+            'name' => 'admin',
+            'email' => env('EQ_ADMIN_USER_EMAIL'),
+        ], [
+            'password' => bcrypt(env('EQ_ADMIN_USER_PASSWORD')),
+        ]);
         $guest_user = User::firstOrCreate([
             'name' => 'Guest',
             'email' => 'guest@'.parse_url(env('APP_URL'))['host'],
         ], [
             'password' => bcrypt('guest'),
         ]);
+        $this->info('Guest user created, id:'.$guest_user->id);
         $imported_data = [
             ['name'=>'Blueprints','path'=>'app/data/blueprints.php','model'=>Blueprint::class,'search_attributes'=>['name','category','subcategory','type']],
             ['name'=>'Talents','path'=>'app/data/talents.php','model'=>Talent::class,'search_attributes'=>['name']],
@@ -93,104 +99,43 @@ class GameInitialization extends Command
             ['name'=>'Quests','path'=>'app/data/quests.php','model'=>Quest::class,'search_attributes'=>['name',]],
             ['name'=>'Quest states','path'=>'app/data/quest_states.php','model'=>QuestState::class,'search_attributes'=>['quest_id','name']],
             ['name'=>'Surface types','path'=>'app/data/surface_types.php','model'=>SurfaceType::class,'search_attributes'=>['name']],
-            ['name'=>'Surface templates','path'=>'app/data/surface_templates.php','model'=>SurfaceTemplate::class,'search_attributes'=>['key']],
             ['name'=>'Questions','path'=>'app/data/questions.php','model'=>Question::class,'search_attributes'=>['text']],
             ['name'=>'World controllers','path'=>'app/data/world_controllers.php','model'=>WorldController::class,'search_attributes'=>['name']],
             ['name'=>'World controller events','path'=>'app/data/world_controller_events.php','model'=>WorldControllerEvent::class,'search_attributes'=>['world_controller_id','function','object_id']],
             ['name'=>'Cell object templates','path'=>'app/data/cell_object_templates.php','model'=>CellObjectTemplate::class,'search_attributes'=>['key']],
         ];
         foreach ($imported_data as $data_array) {
+            $this->call('data:load',['name'=>$data_array['name'],'path'=>$data_array['path'],'model'=>$data_array['model'],'search-attributes'=>$data_array['search_attributes']]);
 
-            $objects = include storage_path($data_array['path']);
-            $bar = $this->output->createProgressBar(count($objects));
-            $this->info('Start create '.$data_array['name'],'...');
-            $bar->start();
-            foreach ($objects as $object_attr) {
-                $search_keys = array_flip($data_array['search_attributes']);
-                $fill_attributes = array_diff_key($object_attr,$search_keys);
-                foreach ($fill_attributes as $key=>$value) {
-                    if (is_array($value)){
-                        foreach ($value as $k=>$v) {
-                            if (Str::startsWith($v,'%relative_cell_id%')){
-                                $params = explode(' ',$v);
-                                $fill_attributes[$key][$k] = MapService::getRelativeCell($params[1],$params[2],$params[3],$params[4])->id;
-
-                            }
-                        }
-                    }else{
-                        if (Str::startsWith($value,'%relative_cell_id%')){
-                            $params = explode(' ',$value);
-                            $fill_attributes[$key] = MapService::getRelativeCell($params[1],$params[2],$params[3],$params[4])->id;
-
-                        }
-                    }
-                }
-                $search_attributes =  array_intersect_key($object_attr,$search_keys);
-                $data_array['model']::firstOrCreate($search_attributes,$fill_attributes);
-                $bar->advance();
-            }
-            $bar->finish();
-            $this->newLine();
-            $this->info($data_array['name'].' created');
         }
 
-        $this->info('Guest user created, id:'.$guest_user->id);
+
         $HS = new HeroService();
         $hero = $HS->create($guest_user);
+        $HS->create($admin_user);
         $HS::addExperience($hero,500);
         $HS::addCoins($hero,50);
         $this->info('Guest hero created, id:'.$guest_user->id);
 
 
-        //add objects
-        $map = Map::find(1);
-        $map_house = Map::find(2);
-        $cell = MapService::getRelativeCell($map,SideEnum::Center,0,3);
-        $cell_house = MapService::getRelativeCell($map_house,SideEnum::Top,0,0);
 
-        CellService::updateCellByTemplateKey($cell,'house_with_garden',['transfer_to_cell_id'=>$cell_house->id]);
-        CellService::updateCellByTemplateKey($cell_house,'door',['transfer_to_cell_id'=>$cell->id]);
 
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-1,1),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,2),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,3),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,4),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-2,5),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,-1,5),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,0,5),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,1,5),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,5),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,4),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,3),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,2,2),'fence');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,1,1),'fence');
-        $cell_left = MapService::getRelativeCell($map,SideEnum::Center,-1,2);
-        $cell_right = MapService::getRelativeCell($map,SideEnum::Center,1,4);
-        MapGeneratorService::fillRectangleOnMapRegion($map,$cell_left,$cell_right,['flower_hib','flower_ros','flower_blo','flower_tul'],true);
+        $map_objects = include storage_path('app/data/map_filling.php');
+        $bar = $this->output->createProgressBar(count($map_objects));
+        $this->info('Start fill map objects...');
+        $bar->start();
+        foreach ($map_objects as $mo) {
+            MapGeneratorService::fillingObjectProcessing($mo);
+            $bar->advance();
+        }
+        $bar->finish();
+        $this->newLine();
 
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,0,2),'trail');
-        CellService::updateCellByTemplateKey(MapService::getRelativeCell($map,SideEnum::Center,0,1),'trail');
 
-        $cell_for_npc = MapService::getRelativeCell($map_house,SideEnum::Left,1,0);
         $npc = Unit::where('type','NPC')->first();
-        $npc->update(['cell_id'=>$cell_for_npc->id]);
         CellService::addObjectUnit($npc);
 
-        $cell_mounts = MapService::getRelativeCell($map,SideEnum::Center,6,-5);
-        MapGeneratorService::fillCircleOnMapRegion($map,$cell_mounts,4,['mountain','snow_mountain']);
-        $cell_sea = MapService::getRelativeCell($map,SideEnum::Center,16,0);
-        MapGeneratorService::fillCircleOnMapRegion($map,$cell_sea,10,['sea']);
-        $cell_cave_entrance = MapService::getRelativeCell($map,SideEnum::Center,5,-8);
 
-
-        $cell_left = MapService::getRelativeCell('start_cave',SideEnum::LeftBottom,0,0);
-        $cell_right = MapService::getRelativeCell('start_cave',SideEnum::RightTop,0,0);
-        MapGeneratorService::fillRectangleOnMapRegion('start_cave',$cell_left,$cell_right,['rock'],true);
-
-        $cell_cave = MapService::getRelativeCell('start_cave',SideEnum::Left,0,0);
-        CellService::updateCellByTemplateKey($cell_cave_entrance,'cave_entrance',['transfer_to_cell_id'=>$cell_cave->id]);
-        CellService::updateCellByTemplateKey($cell_cave,'ladder',['transfer_to_cell_id'=>$cell_cave_entrance->id]);
-        $this->info('Update Cave');
 
         return Command::SUCCESS;
     }

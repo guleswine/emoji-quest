@@ -1,10 +1,10 @@
 <?php
 
 return [
-    ['text' => 'Привет, какие то вопросы?'],
-    ['text' => 'Меня зовут Феликс'],
-    ['text' => 'Это перекрёсток между пространством и временем'],
-    ['text' => 'Знаешь, мне на самом деле не хочется общаться на голодный желудок... Вот если бы ты мог меня чем нибудь угостить!'],
-    ['text' => 'Всего лишь одну жирненьку крысу! Я видел как одна из них убегала в пещеру к югу от моего дома, но мне было лень за ней гнаться. Уверен ты сможешь её отыскать!'],
-    ['text' => 'О благодарю! Вот держи взамен немного монет, они тебе пригодятся!'],
+    ['text' => 'Hi, any questions?'],
+    ['text' => 'My name is Felix'],
+    ['text' => 'This is the crossroads between space and time'],
+    ['text' => 'You know, I really don\'t want to chat on an empty stomach... If only you could buy me something!'],
+     ['text' => 'Just one fat rat! I saw one of them running into a cave south of my house, but I was too lazy to chase her. I\'m sure you can find it!'],
+     ['text' => 'Oh thank you! Here, keep some coins in return, you will need them!'],
 ];

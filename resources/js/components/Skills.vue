@@ -80,7 +80,7 @@ export default {
           <div class="h-[6vh] lg:h-[5vh]  w-full bg-slate-100 grid grid-cols-4">
             <div class="col-span-3 justify-self-start flex align-items-center">
               <img class="h-10 w-10 m-auto" src="/public/open_emoji/lite_colored/books.png">
-              <h2 class="p-3 align-self-center">Навыки</h2>
+              <h2 class="p-3 align-self-center">Skills</h2>
             </div>
             <div class="text-right p-3">
               <button class="hover:shadow-lg" @click="close"><img class="h-6 w-6 m-auto" src="/public/open_emoji/lite_colored/cross_mark.png"></button>
@@ -92,7 +92,7 @@ export default {
 
             <svg width="800" class="h-full"  >
               <foreignObject  height="60" width="180" x="180" y="20" class="text-center">
-                <p class="font-semibold col-span-2 text-center">Свободных очков:</p>
+                <p class="font-semibold col-span-2 text-center">Free points:</p>
                 <p v-if="hero">{{hero.skill_points}}</p>
               </foreignObject>
                 <foreignObject :id="'object-'+skill.id" class="text-center" height="64" width="64" :x="370-((skill.row-1)*35)+((skill.col-1)*70)" :y="((skill.row-1)*65)+10" v-for="skill in skills" >

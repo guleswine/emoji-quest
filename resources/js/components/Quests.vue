@@ -48,7 +48,7 @@ export default {
       <div class="grid grid-cols-4 bg-slate-100 w-full h-full">
         <div class="col-span-3 justify-self-start flex align-items-center">
           <img class="h-10 w-10 m-auto" src="/public/open_emoji/lite_colored/light_bulb.png">
-          <h2 class="p-3">Квесты</h2>
+          <h2 class="p-3">Quests</h2>
         </div>
         <div class="text-right p-3">
           <button class="hover:shadow-lg" @click="$emit('close')"><img class="h-6 w-6 m-auto" src="/public/open_emoji/lite_colored/cross_mark.png"></button>
@@ -59,7 +59,7 @@ export default {
       <div class="grid grid-cols-2 lg:grid-cols-5 h-full w-full">
         <div class="col-span-2 h-[30vh] lg:col-span-2 lg:h-full   overflow-y-scroll">
           <div class="flex h-full" v-if="!quests || !quests.length" >
-            <p class="text-2xl mx-auto mt-4 text-slate-400 font-bold">Квесты отсутствуют</p>
+            <p class="text-2xl mx-auto mt-4 text-slate-400 font-bold">No quests</p>
           </div>
           <ul id="array-rendering">
             <li @click="loadQuest(quest.id)" class="h-8 bg-slate-300 active:bg-slate-600 focus:bg-slate-600 m-0.5 hover:bg-slate-500 rounded shadow flex" v-for="quest in quests">
@@ -72,7 +72,7 @@ export default {
         </div>
         <div class="col-span-2 h-[54vh]  lg:col-span-3 lg:h-full bg-gray-200">
           <div class="flex h-full" v-if="!quest" >
-            <p class="text-4xl m-auto text-slate-500 font-bold">Выберите квест</p>
+            <p class="text-4xl m-auto text-slate-500 font-bold">Choose a quest</p>
           </div>
           <div v-if="quest" class="h-full w-full bg-no-repeat bg-center flex bg-orange-100">
             <div class="quest-info my-16 lg:my-14 2xl:my-20 mx-12 lg:mx-20 2xl:mx-24  relative w-full" >
