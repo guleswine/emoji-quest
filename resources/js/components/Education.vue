@@ -55,7 +55,7 @@ import Modal from "./reusable/Modal.vue";
 
                 </div>
                 <div class="flex items-center place-content-center py-4">
-                    <button class="bg-slate-300 active:bg-slate-600 p-2 rounded hover:bg-slate-500 hover:shadow-lg" @click="$emit('close')">Понятно</button>
+                    <button class="bg-slate-300 active:bg-slate-600 p-2 rounded hover:bg-slate-500 hover:shadow-lg" @click="$emit('close')">I understand</button>
                 </div>
             </div>
 
