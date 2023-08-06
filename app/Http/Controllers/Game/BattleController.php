@@ -25,7 +25,7 @@ class BattleController extends Controller
             if ($fighter->object_name == 'hero' and $fighter->object_id == $hero->id) {
                 $response = AttackService::handlerHeroAttack($hero, $cell, $area);
             } else {
-                GameNotification::dispatch($hero->id, 'info', 'Сейчас не ваша очередь ходить');
+                GameNotification::dispatch($hero->id, 'info', 'Now it\'s not your turn to go');
             }
         }
 
@@ -43,7 +43,7 @@ class BattleController extends Controller
                 EventService::eventsetHeroDefence($hero, $area);
             //$response = AttackService::handlerHeroAttack($hero,$cell,$area);
             } else {
-                GameNotification::dispatch($hero->id, 'info', 'Сейчас не ваша очередь ходить');
+                GameNotification::dispatch($hero->id, 'info', 'Now it\'s not your turn to go');
             }
         }
     }

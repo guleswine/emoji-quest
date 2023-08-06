@@ -64,7 +64,7 @@
 
                 @auth
                     <div class="pt-6 md:p-8 text-center space-y-4">
-                        <a href="{{ url('/game') }}" class="text-4xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">Играть</a>
+                        <a href="{{ url('/game') }}" class="text-4xl text-gray-700 dark:text-gray-500 focus:underline active:underline hover:underline">Play</a>
                     </div>
                 @else
                 <div class="pt-6 md:pt-8 text-center space-y-4">
